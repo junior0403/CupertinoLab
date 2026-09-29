@@ -23,6 +23,105 @@ export const categories = [
 
 export type CategorySlug = (typeof categories)[number]["slug"];
 
+export const sections = [
+  {
+    slug: "iphone",
+    name: "iPhone",
+    path: "/iphone",
+    dek: "18 Pro y Pro Max ya están en tienda. Air, 17 y 17e siguen en la gama.",
+  },
+  {
+    slug: "iphone-duo",
+    name: "iPhone Duo",
+    path: "/iphone/iphone-duo",
+    dek: "El primer plegable de Apple, explicado sin humo.",
+  },
+  {
+    slug: "ios",
+    name: "iOS",
+    path: "/ios",
+    dek: "El sistema. Esta sección espera fichas; todavía no hay ninguna.",
+  },
+  {
+    slug: "airpods",
+    name: "AirPods",
+    path: "/airpods",
+    dek: "Los 5 ponen cancelación de ruido en el modelo de 129 dólares.",
+  },
+  {
+    slug: "watch",
+    name: "Apple Watch",
+    path: "/watch",
+    dek: "Series 12 y Ultra 4, a la venta desde el 18 de septiembre.",
+  },
+  {
+    slug: "accesorios",
+    name: "Accesorios",
+    path: "/accesorios",
+    dek: "Lo que existe como producto, no como foto de un vídeo.",
+  },
+  {
+    slug: "comparativas",
+    name: "Comparativas",
+    path: "/comparativas",
+    dek: "Dos fichas, una pregunta. Solo cifras ya publicadas.",
+  },
+  {
+    slug: "guias",
+    name: "Trucos & Guías",
+    path: "/guias",
+    dek: "Cómo se usa, cuando el sistema ya lo describe.",
+  },
+] as const;
+
+export type SectionSlug = (typeof sections)[number]["slug"];
+
+const comparativas = new Set([
+  "iphone-18-pro-vs-max",
+  "vs-iphone-18-pro-max",
+  "vs-galaxy-z-fold",
+]);
+
+const guias = new Set([
+  "guia-completa",
+  "trucos",
+  "funciones-ocultas",
+  "dos-aplicaciones",
+  "apple-pencil",
+  "antes-de-comprar",
+  "como-funciona-la-bisagra",
+]);
+
+const accesorios = new Set([
+  "mejores-fundas",
+  "mejores-accesorios",
+  "necesita-funda",
+  "apple-pencil",
+]);
+
+export function sectionsFor(article: { slug: string; category: CategorySlug }): SectionSlug[] {
+  const rails: SectionSlug[] = [];
+  if (article.category === "iphone") rails.push("iphone");
+  if (article.category === "duo") rails.push("iphone-duo");
+  if (article.category === "airpods") rails.push("airpods");
+  if (article.category === "watch") rails.push("watch");
+  if (comparativas.has(article.slug)) rails.push("comparativas");
+  if (guias.has(article.slug)) rails.push("guias");
+  if (accesorios.has(article.slug)) rails.push("accesorios");
+  return rails;
+}
+
+export function sectionBySlug(slug: string) {
+  return sections.find((section) => section.slug === slug);
+}
+
+export function articlePath(article: { slug: string; category: CategorySlug }) {
+  if (article.category === "duo") return `/iphone/iphone-duo/${article.slug}`;
+  if (article.category === "iphone") return `/iphone/${article.slug}`;
+  if (article.category === "airpods") return `/airpods/${article.slug}`;
+  return `/watch/${article.slug}`;
+}
+
 export const clusters = {
   viral: "Señal",
   transaccional: "Compra",
@@ -35,3 +134,12 @@ export type Cluster = keyof typeof clusters;
 export function categoryBySlug(slug: string) {
   return categories.find((category) => category.slug === slug);
 }
+
+export const featuredSlug = "otono-2026";
+
+export const duoSpotlight = [
+  "guia-completa",
+  "cuanto-cuesta",
+  "vs-iphone-18-pro-max",
+  "pliegue-en-la-pantalla",
+] as const;

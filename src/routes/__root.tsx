@@ -8,11 +8,11 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "CupertinoLab · iPhone, AirPods, Watch y Duo" },
+      { title: "CupertinoLab · El catálogo, sin el tráiler" },
       {
         name: "description",
         content:
-          "Laboratorio editorial independiente sobre la gama Apple: iPhone 18, AirPods, Apple Watch y el iPhone Duo.",
+          "Noticias, guías, comparativas y pruebas sobre iPhone, iOS y el ecosistema Apple.",
       },
       { name: "theme-color", content: "#f3efe6" },
     ],

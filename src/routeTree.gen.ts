@@ -11,10 +11,27 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AvisoRouteImport } from './routes/aviso'
+import { Route as ContactoRouteImport } from './routes/contacto'
+import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as EditorialRouteImport } from './routes/editorial'
 import { Route as MapaRouteImport } from './routes/mapa'
+import { Route as PrivacidadRouteImport } from './routes/privacidad'
+import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as TerminosRouteImport } from './routes/terminos'
+import { Route as AccesoriosIndexRouteImport } from './routes/accesorios/index'
+import { Route as AirpodsIndexRouteImport } from './routes/airpods/index'
+import { Route as AirpodsSlugRouteImport } from './routes/airpods/$slug'
 import { Route as ArticuloSlugRouteImport } from './routes/articulo/$slug'
 import { Route as CategoriaSlugRouteImport } from './routes/categoria/$slug'
+import { Route as ComparativasIndexRouteImport } from './routes/comparativas/index'
+import { Route as GuiasIndexRouteImport } from './routes/guias/index'
+import { Route as IosIndexRouteImport } from './routes/ios/index'
+import { Route as IphoneIndexRouteImport } from './routes/iphone/index'
+import { Route as IphoneSlugRouteImport } from './routes/iphone/$slug'
+import { Route as WatchIndexRouteImport } from './routes/watch/index'
+import { Route as WatchSlugRouteImport } from './routes/watch/$slug'
+import { Route as IphoneIphoneDuoIndexRouteImport } from './routes/iphone/iphone-duo/index'
+import { Route as IphoneIphoneDuoSlugRouteImport } from './routes/iphone/iphone-duo/$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -24,6 +41,16 @@ const IndexRoute = IndexRouteImport.update({
 const AvisoRoute = AvisoRouteImport.update({
   id: '/aviso',
   path: '/aviso',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactoRoute = ContactoRouteImport.update({
+  id: '/contacto',
+  path: '/contacto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CookiesRoute = CookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EditorialRoute = EditorialRouteImport.update({
@@ -36,6 +63,36 @@ const MapaRoute = MapaRouteImport.update({
   path: '/mapa',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacidadRoute = PrivacidadRouteImport.update({
+  id: '/privacidad',
+  path: '/privacidad',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TerminosRoute = TerminosRouteImport.update({
+  id: '/terminos',
+  path: '/terminos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccesoriosIndexRoute = AccesoriosIndexRouteImport.update({
+  id: '/accesorios/',
+  path: '/accesorios/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AirpodsIndexRoute = AirpodsIndexRouteImport.update({
+  id: '/airpods/',
+  path: '/airpods/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AirpodsSlugRoute = AirpodsSlugRouteImport.update({
+  id: '/airpods/$slug',
+  path: '/airpods/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ArticuloSlugRoute = ArticuloSlugRouteImport.update({
   id: '/articulo/$slug',
   path: '/articulo/$slug',
@@ -46,66 +103,230 @@ const CategoriaSlugRoute = CategoriaSlugRouteImport.update({
   path: '/categoria/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ComparativasIndexRoute = ComparativasIndexRouteImport.update({
+  id: '/comparativas/',
+  path: '/comparativas/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuiasIndexRoute = GuiasIndexRouteImport.update({
+  id: '/guias/',
+  path: '/guias/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IosIndexRoute = IosIndexRouteImport.update({
+  id: '/ios/',
+  path: '/ios/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IphoneIndexRoute = IphoneIndexRouteImport.update({
+  id: '/iphone/',
+  path: '/iphone/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IphoneSlugRoute = IphoneSlugRouteImport.update({
+  id: '/iphone/$slug',
+  path: '/iphone/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WatchIndexRoute = WatchIndexRouteImport.update({
+  id: '/watch/',
+  path: '/watch/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WatchSlugRoute = WatchSlugRouteImport.update({
+  id: '/watch/$slug',
+  path: '/watch/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IphoneIphoneDuoIndexRoute = IphoneIphoneDuoIndexRouteImport.update({
+  id: '/iphone/iphone-duo/',
+  path: '/iphone/iphone-duo/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IphoneIphoneDuoSlugRoute = IphoneIphoneDuoSlugRouteImport.update({
+  id: '/iphone/iphone-duo/$slug',
+  path: '/iphone/iphone-duo/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/aviso': typeof AvisoRoute
+  '/contacto': typeof ContactoRoute
+  '/cookies': typeof CookiesRoute
   '/editorial': typeof EditorialRoute
   '/mapa': typeof MapaRoute
+  '/privacidad': typeof PrivacidadRoute
+  '/sobre': typeof SobreRoute
+  '/terminos': typeof TerminosRoute
+  '/airpods/$slug': typeof AirpodsSlugRoute
   '/articulo/$slug': typeof ArticuloSlugRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
+  '/iphone/$slug': typeof IphoneSlugRoute
+  '/watch/$slug': typeof WatchSlugRoute
+  '/accesorios/': typeof AccesoriosIndexRoute
+  '/airpods/': typeof AirpodsIndexRoute
+  '/comparativas/': typeof ComparativasIndexRoute
+  '/guias/': typeof GuiasIndexRoute
+  '/ios/': typeof IosIndexRoute
+  '/iphone/': typeof IphoneIndexRoute
+  '/watch/': typeof WatchIndexRoute
+  '/iphone/iphone-duo/$slug': typeof IphoneIphoneDuoSlugRoute
+  '/iphone/iphone-duo/': typeof IphoneIphoneDuoIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/aviso': typeof AvisoRoute
+  '/contacto': typeof ContactoRoute
+  '/cookies': typeof CookiesRoute
   '/editorial': typeof EditorialRoute
   '/mapa': typeof MapaRoute
+  '/privacidad': typeof PrivacidadRoute
+  '/sobre': typeof SobreRoute
+  '/terminos': typeof TerminosRoute
+  '/airpods/$slug': typeof AirpodsSlugRoute
   '/articulo/$slug': typeof ArticuloSlugRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
+  '/iphone/$slug': typeof IphoneSlugRoute
+  '/watch/$slug': typeof WatchSlugRoute
+  '/accesorios': typeof AccesoriosIndexRoute
+  '/airpods': typeof AirpodsIndexRoute
+  '/comparativas': typeof ComparativasIndexRoute
+  '/guias': typeof GuiasIndexRoute
+  '/ios': typeof IosIndexRoute
+  '/iphone': typeof IphoneIndexRoute
+  '/watch': typeof WatchIndexRoute
+  '/iphone/iphone-duo/$slug': typeof IphoneIphoneDuoSlugRoute
+  '/iphone/iphone-duo': typeof IphoneIphoneDuoIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/aviso': typeof AvisoRoute
+  '/contacto': typeof ContactoRoute
+  '/cookies': typeof CookiesRoute
   '/editorial': typeof EditorialRoute
   '/mapa': typeof MapaRoute
+  '/privacidad': typeof PrivacidadRoute
+  '/sobre': typeof SobreRoute
+  '/terminos': typeof TerminosRoute
+  '/airpods/$slug': typeof AirpodsSlugRoute
   '/articulo/$slug': typeof ArticuloSlugRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
+  '/iphone/$slug': typeof IphoneSlugRoute
+  '/watch/$slug': typeof WatchSlugRoute
+  '/accesorios/': typeof AccesoriosIndexRoute
+  '/airpods/': typeof AirpodsIndexRoute
+  '/comparativas/': typeof ComparativasIndexRoute
+  '/guias/': typeof GuiasIndexRoute
+  '/ios/': typeof IosIndexRoute
+  '/iphone/': typeof IphoneIndexRoute
+  '/watch/': typeof WatchIndexRoute
+  '/iphone/iphone-duo/$slug': typeof IphoneIphoneDuoSlugRoute
+  '/iphone/iphone-duo/': typeof IphoneIphoneDuoIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/aviso'
+    | '/contacto'
+    | '/cookies'
     | '/editorial'
     | '/mapa'
+    | '/privacidad'
+    | '/sobre'
+    | '/terminos'
+    | '/airpods/$slug'
     | '/articulo/$slug'
     | '/categoria/$slug'
+    | '/iphone/$slug'
+    | '/watch/$slug'
+    | '/accesorios/'
+    | '/airpods/'
+    | '/comparativas/'
+    | '/guias/'
+    | '/ios/'
+    | '/iphone/'
+    | '/watch/'
+    | '/iphone/iphone-duo/$slug'
+    | '/iphone/iphone-duo/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/aviso'
+    | '/contacto'
+    | '/cookies'
     | '/editorial'
     | '/mapa'
+    | '/privacidad'
+    | '/sobre'
+    | '/terminos'
+    | '/airpods/$slug'
     | '/articulo/$slug'
     | '/categoria/$slug'
+    | '/iphone/$slug'
+    | '/watch/$slug'
+    | '/accesorios'
+    | '/airpods'
+    | '/comparativas'
+    | '/guias'
+    | '/ios'
+    | '/iphone'
+    | '/watch'
+    | '/iphone/iphone-duo/$slug'
+    | '/iphone/iphone-duo'
   id:
     | '__root__'
     | '/'
     | '/aviso'
+    | '/contacto'
+    | '/cookies'
     | '/editorial'
     | '/mapa'
+    | '/privacidad'
+    | '/sobre'
+    | '/terminos'
+    | '/airpods/$slug'
     | '/articulo/$slug'
     | '/categoria/$slug'
+    | '/iphone/$slug'
+    | '/watch/$slug'
+    | '/accesorios/'
+    | '/airpods/'
+    | '/comparativas/'
+    | '/guias/'
+    | '/ios/'
+    | '/iphone/'
+    | '/watch/'
+    | '/iphone/iphone-duo/$slug'
+    | '/iphone/iphone-duo/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AvisoRoute: typeof AvisoRoute
+  ContactoRoute: typeof ContactoRoute
+  CookiesRoute: typeof CookiesRoute
   EditorialRoute: typeof EditorialRoute
   MapaRoute: typeof MapaRoute
+  PrivacidadRoute: typeof PrivacidadRoute
+  SobreRoute: typeof SobreRoute
+  TerminosRoute: typeof TerminosRoute
+  AirpodsSlugRoute: typeof AirpodsSlugRoute
   ArticuloSlugRoute: typeof ArticuloSlugRoute
   CategoriaSlugRoute: typeof CategoriaSlugRoute
+  IphoneSlugRoute: typeof IphoneSlugRoute
+  WatchSlugRoute: typeof WatchSlugRoute
+  AccesoriosIndexRoute: typeof AccesoriosIndexRoute
+  AirpodsIndexRoute: typeof AirpodsIndexRoute
+  ComparativasIndexRoute: typeof ComparativasIndexRoute
+  GuiasIndexRoute: typeof GuiasIndexRoute
+  IosIndexRoute: typeof IosIndexRoute
+  IphoneIndexRoute: typeof IphoneIndexRoute
+  WatchIndexRoute: typeof WatchIndexRoute
+  IphoneIphoneDuoSlugRoute: typeof IphoneIphoneDuoSlugRoute
+  IphoneIphoneDuoIndexRoute: typeof IphoneIphoneDuoIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -124,6 +345,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AvisoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contacto': {
+      id: '/contacto'
+      path: '/contacto'
+      fullPath: '/contacto'
+      preLoaderRoute: typeof ContactoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/editorial': {
       id: '/editorial'
       path: '/editorial'
@@ -136,6 +371,48 @@ declare module '@tanstack/react-router' {
       path: '/mapa'
       fullPath: '/mapa'
       preLoaderRoute: typeof MapaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacidad': {
+      id: '/privacidad'
+      path: '/privacidad'
+      fullPath: '/privacidad'
+      preLoaderRoute: typeof PrivacidadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terminos': {
+      id: '/terminos'
+      path: '/terminos'
+      fullPath: '/terminos'
+      preLoaderRoute: typeof TerminosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accesorios/': {
+      id: '/accesorios/'
+      path: '/accesorios'
+      fullPath: '/accesorios/'
+      preLoaderRoute: typeof AccesoriosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/airpods/': {
+      id: '/airpods/'
+      path: '/airpods'
+      fullPath: '/airpods/'
+      preLoaderRoute: typeof AirpodsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/airpods/$slug': {
+      id: '/airpods/$slug'
+      path: '/airpods/$slug'
+      fullPath: '/airpods/$slug'
+      preLoaderRoute: typeof AirpodsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/articulo/$slug': {
@@ -152,16 +429,96 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategoriaSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/comparativas/': {
+      id: '/comparativas/'
+      path: '/comparativas'
+      fullPath: '/comparativas/'
+      preLoaderRoute: typeof ComparativasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guias/': {
+      id: '/guias/'
+      path: '/guias'
+      fullPath: '/guias/'
+      preLoaderRoute: typeof GuiasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ios/': {
+      id: '/ios/'
+      path: '/ios'
+      fullPath: '/ios/'
+      preLoaderRoute: typeof IosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iphone/': {
+      id: '/iphone/'
+      path: '/iphone'
+      fullPath: '/iphone/'
+      preLoaderRoute: typeof IphoneIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iphone/$slug': {
+      id: '/iphone/$slug'
+      path: '/iphone/$slug'
+      fullPath: '/iphone/$slug'
+      preLoaderRoute: typeof IphoneSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/watch/': {
+      id: '/watch/'
+      path: '/watch'
+      fullPath: '/watch/'
+      preLoaderRoute: typeof WatchIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/watch/$slug': {
+      id: '/watch/$slug'
+      path: '/watch/$slug'
+      fullPath: '/watch/$slug'
+      preLoaderRoute: typeof WatchSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iphone/iphone-duo/': {
+      id: '/iphone/iphone-duo/'
+      path: '/iphone/iphone-duo'
+      fullPath: '/iphone/iphone-duo/'
+      preLoaderRoute: typeof IphoneIphoneDuoIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iphone/iphone-duo/$slug': {
+      id: '/iphone/iphone-duo/$slug'
+      path: '/iphone/iphone-duo/$slug'
+      fullPath: '/iphone/iphone-duo/$slug'
+      preLoaderRoute: typeof IphoneIphoneDuoSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AvisoRoute: AvisoRoute,
+  ContactoRoute: ContactoRoute,
+  CookiesRoute: CookiesRoute,
   EditorialRoute: EditorialRoute,
   MapaRoute: MapaRoute,
+  PrivacidadRoute: PrivacidadRoute,
+  SobreRoute: SobreRoute,
+  TerminosRoute: TerminosRoute,
+  AirpodsSlugRoute: AirpodsSlugRoute,
   ArticuloSlugRoute: ArticuloSlugRoute,
   CategoriaSlugRoute: CategoriaSlugRoute,
+  IphoneSlugRoute: IphoneSlugRoute,
+  WatchSlugRoute: WatchSlugRoute,
+  AccesoriosIndexRoute: AccesoriosIndexRoute,
+  AirpodsIndexRoute: AirpodsIndexRoute,
+  ComparativasIndexRoute: ComparativasIndexRoute,
+  GuiasIndexRoute: GuiasIndexRoute,
+  IosIndexRoute: IosIndexRoute,
+  IphoneIndexRoute: IphoneIndexRoute,
+  WatchIndexRoute: WatchIndexRoute,
+  IphoneIphoneDuoSlugRoute: IphoneIphoneDuoSlugRoute,
+  IphoneIphoneDuoIndexRoute: IphoneIphoneDuoIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

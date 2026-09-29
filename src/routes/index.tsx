@@ -1,124 +1,139 @@
-import { useMemo, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { ArticleCard } from "@/components/article-card";
+import { Shell } from "@/components/chrome";
 import { articles } from "@/content/articles";
-import { categories } from "@/content/taxonomy";
-import { ClusterMark, Shell } from "@/components/chrome";
+import { articlesInSection, pickArticles } from "@/components/section-view";
+import { duoSpotlight, featuredSlug, sections } from "@/content/taxonomy";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "CupertinoLab · El catálogo, sin el tráiler" },
+      {
+        name: "description",
+        content: "Noticias, guías, comparativas y pruebas sobre iPhone, iOS y el ecosistema Apple.",
+      },
+    ],
+  }),
   component: Home,
 });
 
 function Home() {
-  const [query, setQuery] = useState("");
-  const needle = query.trim().toLowerCase();
-  const pillar = articles.find((article) => article.slug === "otono-2026");
-
-  const filtered = useMemo(() => {
-    if (!needle) return articles;
-    return articles.filter((article) => {
-      const blob = `${article.title} ${article.dek} ${article.directAnswer} ${article.tags.join(" ")}`.toLowerCase();
-      return blob.includes(needle);
-    });
-  }, [needle]);
+  const featured = articles.find((article) => article.slug === featuredSlug) ?? articles[0];
+  const latest = articles.filter((article) => article.slug !== featured?.slug).slice(0, 6);
+  const duo = pickArticles(duoSpotlight);
+  const guides = articlesInSection("guias").slice(0, 4);
+  const comparisons = articlesInSection("comparativas").slice(0, 4);
 
   return (
-    <Shell>
-      <p className="pt-8 font-sans text-xs font-medium tracking-widest text-oxide uppercase">
-        Número 02 · otoño 2026
+    <Shell width="wide">
+      <p className="pt-6 font-sans text-xs font-medium tracking-widest text-oxide uppercase">
+        Laboratorio · otoño 2026
       </p>
-      <h1 className="mt-3 font-serif text-4xl leading-tight text-ink md:text-5xl">
+      <h1 className="mt-2 max-w-3xl font-serif text-4xl leading-tight text-ink md:text-5xl">
         El catálogo, sin el tráiler.
       </h1>
-      <p className="mt-4 max-w-prose font-sans text-base leading-relaxed text-muted">
-        CupertinoLab cubre el iPhone que ya está en tienda, los AirPods, el
-        Watch y el Duo que todavía no sale. Una pregunta, la cifra publicada
-        y lo que nadie ha medido. El plegable es una sección, no el sitio.
+      <p className="mt-3 max-w-xl font-sans text-base leading-relaxed text-ink">
+        Noticias, guías, comparativas y pruebas sobre iPhone, iOS y el ecosistema Apple.
+      </p>
+      <p className="mt-2 font-sans text-sm text-muted">
+        Una pregunta, la cifra publicada y lo que nadie ha medido.
       </p>
 
-      {pillar ? (
-        <Link
-          to="/articulo/$slug"
-          params={{ slug: pillar.slug }}
-          className="mt-8 block bg-inverse px-5 py-6 text-paper"
-        >
-          <span className="font-sans text-xs font-medium tracking-widest text-sand uppercase">
-            Pilar
-          </span>
-          <span className="mt-2 block font-serif text-3xl leading-tight text-paper">
-            {pillar.title}
-          </span>
-          <span className="mt-3 block font-sans text-sm leading-relaxed text-sand">
-            {pillar.directAnswer}
-          </span>
-        </Link>
+      {featured ? (
+        <section className="mt-8 border-t border-line pt-6" aria-labelledby="destacado">
+          <h2 id="destacado" className="font-sans text-xs font-medium tracking-widest text-oxide uppercase">
+            Destacado
+          </h2>
+          <div className="mt-4 max-w-3xl">
+            <ArticleCard article={featured} />
+          </div>
+        </section>
       ) : null}
 
-      <label className="mt-8 block">
-        <span className="font-sans text-xs font-medium tracking-widest text-muted uppercase">
-          Buscar en iPhone, AirPods, Watch y Duo
-        </span>
-        <input
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="Pro Max, AirPods, pulso, pliegue…"
-          className="mt-2 w-full border border-line bg-card px-4 py-3 font-sans text-base text-ink outline-none placeholder:text-muted"
-        />
-      </label>
+      <section className="mt-12" aria-labelledby="ultimos">
+        <h2 id="ultimos" className="font-serif text-3xl text-ink">
+          Últimos artículos
+        </h2>
+        <ul className="mt-6 grid grid-cols-1 gap-10 md:grid-cols-3">
+          {latest.map((article) => (
+            <li key={article.slug}>
+              <ArticleCard article={article} />
+            </li>
+          ))}
+        </ul>
+      </section>
 
-      {needle ? (
-        <section className="mt-8" aria-live="polite">
-          <h2 className="font-serif text-2xl text-ink">
-            {filtered.length === 0 ? "Nada con esas palabras" : `${filtered.length} fichas`}
-          </h2>
-          <ArticleList items={filtered} />
-        </section>
-      ) : (
-        categories.map((category) => {
-          const items = articles.filter(
-            (article) => article.category === category.slug && article.slug !== pillar?.slug,
-          );
-          return (
-            <section key={category.slug} className="mt-10">
-              <div className="flex items-baseline justify-between gap-4">
-                <h2 className="font-serif text-2xl text-ink">{category.name}</h2>
-                <Link
-                  to="/categoria/$slug"
-                  params={{ slug: category.slug }}
-                  className="font-sans text-sm text-oxide underline underline-offset-4"
-                >
-                  Ver sección
-                </Link>
-              </div>
-              <p className="mt-1 font-sans text-sm text-muted">{category.dek}</p>
-              <ArticleList items={items} />
-            </section>
-          );
-        })
-      )}
+      <section className="mt-14 bg-inverse px-5 py-8 text-paper md:px-8" aria-labelledby="duo">
+        <h2 id="duo" className="font-serif text-3xl">
+          iPhone Duo
+        </h2>
+        <p className="mt-2 max-w-xl font-sans text-sm leading-relaxed text-sand">
+          El primer plegable de Apple, explicado sin humo.
+        </p>
+        <ul className="mt-6 grid grid-cols-1 gap-8 md:grid-cols-2">
+          {duo.map((article) => (
+            <li key={article.slug}>
+              <ArticleCard article={article} tone="inverse" />
+            </li>
+          ))}
+        </ul>
+        <a href="/iphone/iphone-duo" className="mt-8 inline-block font-sans text-sm text-paper underline underline-offset-4">
+          Ver todo sobre iPhone Duo →
+        </a>
+      </section>
+
+      <Rail title="Guías y trucos" href="/guias" items={guides} />
+      <Rail title="Comparativas" href="/comparativas" items={comparisons} />
+
+      <section className="mt-14" aria-labelledby="explorar">
+        <h2 id="explorar" className="font-serif text-3xl text-ink">
+          Explorar CupertinoLab
+        </h2>
+        <ul className="mt-6 grid grid-cols-1 gap-px border border-line bg-line sm:grid-cols-2 md:grid-cols-4">
+          {sections.map((section) => {
+            const count = articlesInSection(section.slug).length;
+            return (
+              <li key={section.slug} className="bg-paper">
+                <a href={section.path} className="block px-4 py-5">
+                  <span className="block font-serif text-xl text-ink">{section.name}</span>
+                  <span className="mt-1 block font-sans text-xs tracking-wide text-muted uppercase">
+                    {count === 0 ? "Sin fichas" : `${count} fichas`}
+                  </span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
     </Shell>
   );
 }
 
-function ArticleList({ items }: { items: typeof articles }) {
+function Rail({
+  title,
+  href,
+  items,
+}: {
+  title: string;
+  href: string;
+  items: typeof articles;
+}) {
   return (
-    <ul className="mt-4 divide-y divide-line border-y border-line">
-      {items.map((article) => (
-        <li key={article.slug}>
-          <Link
-            to="/articulo/$slug"
-            params={{ slug: article.slug }}
-            className="block py-4"
-          >
-            <ClusterMark cluster={article.cluster} />
-            <span className="mt-1 block font-serif text-xl leading-snug text-ink">
-              {article.title}
-            </span>
-            <span className="mt-1 block font-sans text-sm leading-relaxed text-muted">
-              {article.dek}
-            </span>
-          </Link>
-        </li>
-      ))}
-    </ul>
+    <section className="mt-14">
+      <div className="flex items-baseline justify-between gap-4">
+        <h2 className="font-serif text-3xl text-ink">{title}</h2>
+        <a href={href} className="font-sans text-sm text-oxide underline underline-offset-4">
+          Ver sección
+        </a>
+      </div>
+      <ul className="mt-6 grid grid-cols-1 gap-10 md:grid-cols-2">
+        {items.map((article) => (
+          <li key={article.slug}>
+            <ArticleCard article={article} />
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }

@@ -1,15 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArticleLink } from "@/components/article-card";
 import { Shell } from "@/components/chrome";
-import { articles } from "@/content/articles";
-import { categories, clusters } from "@/content/taxonomy";
+import { articlesInSection } from "@/components/section-view";
+import { sections } from "@/content/taxonomy";
 
 export const Route = createFileRoute("/mapa")({
   head: () => ({
     meta: [
-      { title: "Mapa del sitio · CupertinoLab" },
+      { title: "Mapa · CupertinoLab" },
       {
         name: "description",
-        content: "Índice de iPhone, AirPods, Watch y Duo.",
+        content: "Índice de iPhone, iPhone Duo, iOS, AirPods, Apple Watch, accesorios, comparativas y guías.",
       },
     ],
   }),
@@ -18,58 +19,50 @@ export const Route = createFileRoute("/mapa")({
 
 function Mapa() {
   return (
-    <Shell>
-      <h1 className="pt-8 font-serif text-4xl text-ink">Mapa</h1>
-      <p className="mt-3 font-sans text-base leading-relaxed text-muted">
-        iPhone, AirPods, Watch y Duo. Dentro de cada sección, la intención
-        sigue marcada: señal corta, ficha o decisión de compra.
+    <Shell width="wide">
+      <h1 className="pt-8 font-serif text-4xl text-ink md:text-5xl">Mapa</h1>
+      <p className="mt-3 max-w-prose font-sans text-base leading-relaxed text-muted">
+        Todas las fichas publicadas, agrupadas por sección. Una pieza nueva entra sola en su grupo.
       </p>
-      <ul className="mt-6 space-y-2 font-sans text-base">
-        <li>
-          <Link to="/" className="underline underline-offset-4">
-            Inicio
-          </Link>
-        </li>
-        <li>
-          <Link to="/editorial" className="underline underline-offset-4">
-            Método editorial
-          </Link>
-        </li>
-        <li>
-          <Link to="/aviso" className="underline underline-offset-4">
-            Publicidad y afiliación
-          </Link>
-        </li>
-      </ul>
-      {categories.map((category) => (
-        <section key={category.slug} className="mt-8">
-          <h2 className="font-serif text-2xl">
-            <Link
-              to="/categoria/$slug"
-              params={{ slug: category.slug }}
-              className="underline underline-offset-4"
-            >
-              {category.name}
-            </Link>
-          </h2>
-          <ul className="mt-3 space-y-2">
-            {articles
-              .filter((article) => article.category === category.slug)
-              .map((article) => (
-                <li key={article.slug} className="font-sans text-base">
-                  <Link
-                    to="/articulo/$slug"
-                    params={{ slug: article.slug }}
-                    className="underline underline-offset-4"
-                  >
-                    {article.title}
-                  </Link>
-                  <span className="ml-2 text-sm text-muted">{clusters[article.cluster]}</span>
-                </li>
-              ))}
-          </ul>
-        </section>
-      ))}
+      <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-2">
+        {sections.map((section) => {
+          const items = articlesInSection(section.slug);
+          return (
+            <section key={section.slug} className="border-t border-line pt-4">
+              <h2 className="font-sans text-xs font-medium tracking-widest text-oxide uppercase">
+                <a href={section.path} className="underline underline-offset-4">
+                  {section.name}
+                </a>
+              </h2>
+              {items.length === 0 ? (
+                <p className="mt-3 font-sans text-sm text-muted">Todavía no hay fichas.</p>
+              ) : (
+                <ul className="mt-3 space-y-2">
+                  {items.map((article) => (
+                    <li key={article.slug}>
+                      <ArticleLink
+                        article={article}
+                        className="font-serif text-xl leading-snug text-ink underline decoration-line underline-offset-4"
+                      >
+                        {article.title}
+                      </ArticleLink>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          );
+        })}
+      </div>
+      <p className="mt-10 font-sans text-sm text-muted">
+        <Link to="/editorial" className="underline underline-offset-4">
+          Método
+        </Link>
+        {" · "}
+        <Link to="/aviso" className="underline underline-offset-4">
+          Publicidad
+        </Link>
+      </p>
     </Shell>
   );
 }

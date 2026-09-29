@@ -1,9 +1,27 @@
-import type { ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import { categories, clusters, type Cluster } from "@/content/taxonomy";
+import { ArticleLink } from "@/components/article-card";
+import { articles } from "@/content/articles";
+import { clusters, type Cluster } from "@/content/taxonomy";
 import { getArticle } from "@/content/articles";
 
-export function Shell({ children }: { children: ReactNode }) {
+const nav = [
+  { href: "/iphone", label: "iPhone" },
+  { href: "/airpods", label: "AirPods" },
+  { href: "/watch", label: "Watch" },
+  { href: "/iphone/iphone-duo", label: "Duo" },
+  { href: "/mapa", label: "Mapa" },
+  { href: "/editorial", label: "Método" },
+] as const;
+
+export function Shell({
+  children,
+  width = "read",
+}: {
+  children: ReactNode;
+  width?: "read" | "wide";
+}) {
+  const column = width === "wide" ? "max-w-6xl" : "max-w-2xl";
   return (
     <div className="min-h-screen bg-paper text-ink">
       <a
@@ -13,7 +31,7 @@ export function Shell({ children }: { children: ReactNode }) {
         Saltar al contenido
       </a>
       <Masthead />
-      <main id="contenido" className="mx-auto w-full max-w-2xl px-5 pb-20">
+      <main id="contenido" className={`mx-auto w-full ${column} px-5 pb-20`}>
         {children}
       </main>
       <SiteFooter />
@@ -22,73 +40,155 @@ export function Shell({ children }: { children: ReactNode }) {
 }
 
 export function Masthead() {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const needle = query.trim().toLowerCase();
+  const hits = useMemo(() => {
+    if (needle.length < 2) return [];
+    return articles
+      .filter((article) => {
+        const blob = `${article.title} ${article.dek} ${article.tags.join(" ")}`.toLowerCase();
+        return blob.includes(needle);
+      })
+      .slice(0, 6);
+  }, [needle]);
+
   return (
     <header className="border-b border-line">
-      <div className="mx-auto flex w-full max-w-2xl flex-col gap-4 px-5 py-5">
+      <div className="mx-auto w-full max-w-6xl px-5 py-5">
         <div className="flex items-start justify-between gap-4">
-          <Link to="/" className="group block">
-            <p className="font-sans text-xs font-medium tracking-widest text-oxide uppercase">
-              Laboratorio
-            </p>
-            <p className="font-serif text-3xl leading-none tracking-tight text-ink sm:text-4xl">
-              CupertinoLab
-            </p>
+          <Link to="/" className="block">
+            <p className="font-sans text-xs font-medium tracking-widest text-oxide uppercase">Laboratorio</p>
+            <p className="font-serif text-3xl leading-none tracking-tight text-ink sm:text-4xl">CupertinoLab</p>
           </Link>
-          <p className="max-w-32 text-right font-sans text-xs leading-snug text-muted">
-            Otoño 2026
-            <span className="mt-1 block">Ya en tienda</span>
-          </p>
+          <div className="flex items-start gap-3">
+            <p className="hidden max-w-32 text-right font-sans text-xs leading-snug text-muted sm:block">
+              Otoño 2026
+              <span className="mt-1 block">Ya en tienda</span>
+            </p>
+            <button
+              type="button"
+              aria-expanded={open}
+              aria-controls="busqueda"
+              onClick={() => setOpen((value) => !value)}
+              className="flex h-11 w-11 items-center justify-center border border-line text-ink"
+            >
+              <span className="sr-only">{open ? "Cerrar búsqueda" : "Buscar"}</span>
+              <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <circle cx="11" cy="11" r="6" />
+                <path d="M16 16l5 5" />
+              </svg>
+            </button>
+          </div>
         </div>
-        <nav aria-label="Secciones" className="flex flex-wrap gap-x-4 gap-y-2">
-          {categories.map((category) => (
-            <Link
-              key={category.slug}
-              to="/categoria/$slug"
-              params={{ slug: category.slug }}
+
+        <nav aria-label="Secciones" className="mt-4 hidden flex-wrap gap-x-5 gap-y-2 md:flex">
+          {nav.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
               className="font-sans text-sm text-ink underline decoration-line underline-offset-4 hover:text-oxide hover:decoration-oxide"
             >
-              {category.name}
-            </Link>
+              {item.label}
+            </a>
           ))}
-          <Link
-            to="/mapa"
-            className="font-sans text-sm text-muted underline decoration-line underline-offset-4 hover:text-oxide"
-          >
-            Mapa
-          </Link>
-          <Link
-            to="/editorial"
-            className="font-sans text-sm text-muted underline decoration-line underline-offset-4 hover:text-oxide"
-          >
-            Método
-          </Link>
         </nav>
+
+        <details className="mt-4 border-t border-line pt-3 md:hidden">
+          <summary className="font-sans text-sm text-ink">Secciones</summary>
+          <nav aria-label="Secciones" className="mt-3 flex flex-col gap-3">
+            {nav.map((item) => (
+              <a key={item.href} href={item.href} className="font-sans text-base text-ink">
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </details>
+
+        {open ? (
+          <div id="busqueda" className="mt-4">
+            <label className="block">
+              <span className="sr-only">Buscar en CupertinoLab</span>
+              <input
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="iPhone, AirPods, Watch, Duo"
+                className="w-full border border-line bg-card px-4 py-3 font-sans text-base text-ink outline-none placeholder:text-muted"
+                autoFocus
+              />
+            </label>
+            {needle.length >= 2 ? (
+              <ul className="mt-2 border border-line bg-card">
+                {hits.length === 0 ? (
+                  <li className="px-4 py-3 font-sans text-sm text-muted">Nada con esas palabras.</li>
+                ) : (
+                  hits.map((article) => (
+                    <li key={article.slug} className="border-t border-line first:border-t-0">
+                      <ArticleLink article={article} className="block px-4 py-3 font-serif text-lg text-ink">
+                        {article.title}
+                      </ArticleLink>
+                    </li>
+                  ))
+                )}
+              </ul>
+            ) : null}
+          </div>
+        ) : null}
       </div>
     </header>
   );
 }
 
+const footerNav = [
+  { href: "/iphone", label: "iPhone" },
+  { href: "/iphone/iphone-duo", label: "iPhone Duo" },
+  { href: "/ios", label: "iOS" },
+  { href: "/airpods", label: "AirPods" },
+  { href: "/watch", label: "Watch" },
+  { href: "/comparativas", label: "Comparativas" },
+  { href: "/guias", label: "Guías" },
+  { href: "/mapa", label: "Mapa" },
+  { href: "/editorial", label: "Método" },
+] as const;
+
+const footerInfo = [
+  { href: "/sobre", label: "Sobre CupertinoLab" },
+  { href: "/contacto", label: "Contacto" },
+  { href: "/privacidad", label: "Privacidad" },
+  { href: "/cookies", label: "Cookies" },
+  { href: "/terminos", label: "Términos" },
+] as const;
+
 export function SiteFooter() {
   return (
     <footer className="border-t border-line">
-      <div className="mx-auto flex w-full max-w-2xl flex-col gap-4 px-5 py-8">
-        <p className="font-serif text-2xl text-ink">CupertinoLab</p>
-        <p className="max-w-prose font-sans text-sm leading-relaxed text-muted">
-          Redacción independiente sobre iPhone, AirPods, Watch y el Duo.
-          No pertenecemos a Apple ni vendemos sus productos. Las cifras salen
-          de la ficha publicada. Lo que no está medido, se dice.
-        </p>
-        <div className="flex flex-wrap gap-x-4 gap-y-2">
-          <Link to="/editorial" className="font-sans text-sm underline underline-offset-4">
-            Método editorial
-          </Link>
-          <Link to="/aviso" className="font-sans text-sm underline underline-offset-4">
-            Publicidad y afiliación
-          </Link>
-          <Link to="/mapa" className="font-sans text-sm underline underline-offset-4">
-            Mapa del sitio
-          </Link>
+      <div className="mx-auto grid w-full max-w-6xl gap-8 px-5 py-10 md:grid-cols-4">
+        <div className="md:col-span-2">
+          <p className="font-serif text-3xl text-ink">CupertinoLab</p>
+          <p className="mt-2 font-serif text-lg text-ink">El catálogo, sin el tráiler.</p>
+          <p className="mt-3 max-w-prose font-sans text-sm leading-relaxed text-muted">
+            Redacción independiente sobre iPhone, iOS, AirPods, Watch y el Duo. No pertenecemos a Apple ni
+            vendemos sus productos.
+          </p>
+          <p className="mt-4 font-sans text-xs tracking-widest text-muted uppercase">Redes, cuando existan</p>
         </div>
+        <nav aria-label="Secciones del pie" className="flex flex-col gap-2">
+          {footerNav.map((item) => (
+            <a key={item.href} href={item.href} className="font-sans text-sm text-ink underline underline-offset-4">
+              {item.label}
+            </a>
+          ))}
+        </nav>
+        <nav aria-label="Información" className="flex flex-col gap-2">
+          {footerInfo.map((item) => (
+            <a key={item.href} href={item.href} className="font-sans text-sm text-ink underline underline-offset-4">
+              {item.label}
+            </a>
+          ))}
+          <Link to="/aviso" className="font-sans text-sm text-ink underline underline-offset-4">
+            Publicidad
+          </Link>
+        </nav>
       </div>
     </footer>
   );
@@ -96,24 +196,12 @@ export function SiteFooter() {
 
 export function ClusterMark({ cluster }: { cluster: Cluster }) {
   return (
-    <span className="font-sans text-xs font-medium tracking-widest text-oxide uppercase">
-      {clusters[cluster]}
-    </span>
+    <span className="font-sans text-xs font-medium tracking-widest text-oxide uppercase">{clusters[cluster]}</span>
   );
 }
 
 export function AdSlot({ slot }: { slot: string }) {
-  return (
-    <aside
-      aria-label={`Publicidad, espacio ${slot}`}
-      data-ad-slot={slot}
-      className="my-10 flex h-64 items-center justify-center border border-dashed border-line bg-card"
-    >
-      <p className="font-sans text-xs font-medium tracking-widest text-muted uppercase">
-        Publicidad
-      </p>
-    </aside>
-  );
+  return <div data-ad-slot={slot} hidden />;
 }
 
 export function RichText({ text }: { text: string }) {
@@ -125,16 +213,16 @@ export function RichText({ text }: { text: string }) {
         if (!match) return <span key={index}>{part}</span>;
         const slug = match[1];
         const label = match[2];
-        if (!slug || !label || !getArticle(slug)) return <span key={index}>{label}</span>;
+        const article = slug ? getArticle(slug) : undefined;
+        if (!article || !label) return <span key={index}>{label ?? part}</span>;
         return (
-          <Link
+          <ArticleLink
             key={index}
-            to="/articulo/$slug"
-            params={{ slug }}
+            article={article}
             className="text-ink underline decoration-oxide/50 decoration-1 underline-offset-4 hover:text-oxide"
           >
             {label}
-          </Link>
+          </ArticleLink>
         );
       })}
     </>
@@ -169,10 +257,7 @@ export function SpecTable({
           {rows.map((row) => (
             <tr key={row.join("-")} className="border-t border-line">
               {row.map((cell, index) => (
-                <td
-                  key={`${cell}-${index}`}
-                  className="px-4 py-3 align-top text-ink tabular-nums"
-                >
+                <td key={`${cell}-${index}`} className="px-4 py-3 align-top text-ink tabular-nums">
                   {cell}
                 </td>
               ))}
