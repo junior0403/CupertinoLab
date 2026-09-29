@@ -170,7 +170,18 @@ export function SiteFooter() {
             Redacción independiente sobre iPhone, iOS, AirPods, Watch y el Duo. No pertenecemos a Apple ni
             vendemos sus productos.
           </p>
-          <p className="mt-4 font-sans text-xs tracking-widest text-muted uppercase">Redes, cuando existan</p>
+          <p className="mt-4 font-sans text-xs leading-relaxed text-muted">
+            Fotos de Pexels y Unsplash. El plegable:{" "}
+            <a
+              className="underline underline-offset-4"
+              href="https://commons.wikimedia.org/wiki/File:Apple_foldable_phone.jpg"
+              rel="noreferrer"
+              target="_blank"
+            >
+              ΚΑ ΚΙΤ, Wikimedia Commons
+            </a>
+            , CC BY-SA 4.0.
+          </p>
         </div>
         <nav aria-label="Secciones del pie" className="flex flex-col gap-2">
           {footerNav.map((item) => (
