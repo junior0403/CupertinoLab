@@ -24,6 +24,7 @@ import { Route as AirpodsSlugRouteImport } from './routes/airpods/$slug'
 import { Route as ArticuloSlugRouteImport } from './routes/articulo/$slug'
 import { Route as CategoriaSlugRouteImport } from './routes/categoria/$slug'
 import { Route as ComparativasIndexRouteImport } from './routes/comparativas/index'
+import { Route as ComparativasSlugRouteImport } from './routes/comparativas/$slug'
 import { Route as GuiasIndexRouteImport } from './routes/guias/index'
 import { Route as IosIndexRouteImport } from './routes/ios/index'
 import { Route as IosSlugRouteImport } from './routes/ios/$slug'
@@ -109,6 +110,11 @@ const ComparativasIndexRoute = ComparativasIndexRouteImport.update({
   path: '/comparativas/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ComparativasSlugRoute = ComparativasSlugRouteImport.update({
+  id: '/comparativas/$slug',
+  path: '/comparativas/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GuiasIndexRoute = GuiasIndexRouteImport.update({
   id: '/guias/',
   path: '/guias/',
@@ -168,6 +174,7 @@ export interface FileRoutesByFullPath {
   '/airpods/$slug': typeof AirpodsSlugRoute
   '/articulo/$slug': typeof ArticuloSlugRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
+  '/comparativas/$slug': typeof ComparativasSlugRoute
   '/ios/$slug': typeof IosSlugRoute
   '/iphone/$slug': typeof IphoneSlugRoute
   '/watch/$slug': typeof WatchSlugRoute
@@ -194,6 +201,7 @@ export interface FileRoutesByTo {
   '/airpods/$slug': typeof AirpodsSlugRoute
   '/articulo/$slug': typeof ArticuloSlugRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
+  '/comparativas/$slug': typeof ComparativasSlugRoute
   '/ios/$slug': typeof IosSlugRoute
   '/iphone/$slug': typeof IphoneSlugRoute
   '/watch/$slug': typeof WatchSlugRoute
@@ -221,6 +229,7 @@ export interface FileRoutesById {
   '/airpods/$slug': typeof AirpodsSlugRoute
   '/articulo/$slug': typeof ArticuloSlugRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
+  '/comparativas/$slug': typeof ComparativasSlugRoute
   '/ios/$slug': typeof IosSlugRoute
   '/iphone/$slug': typeof IphoneSlugRoute
   '/watch/$slug': typeof WatchSlugRoute
@@ -249,6 +258,7 @@ export interface FileRouteTypes {
     | '/airpods/$slug'
     | '/articulo/$slug'
     | '/categoria/$slug'
+    | '/comparativas/$slug'
     | '/ios/$slug'
     | '/iphone/$slug'
     | '/watch/$slug'
@@ -275,6 +285,7 @@ export interface FileRouteTypes {
     | '/airpods/$slug'
     | '/articulo/$slug'
     | '/categoria/$slug'
+    | '/comparativas/$slug'
     | '/ios/$slug'
     | '/iphone/$slug'
     | '/watch/$slug'
@@ -301,6 +312,7 @@ export interface FileRouteTypes {
     | '/airpods/$slug'
     | '/articulo/$slug'
     | '/categoria/$slug'
+    | '/comparativas/$slug'
     | '/ios/$slug'
     | '/iphone/$slug'
     | '/watch/$slug'
@@ -328,6 +340,7 @@ export interface RootRouteChildren {
   AirpodsSlugRoute: typeof AirpodsSlugRoute
   ArticuloSlugRoute: typeof ArticuloSlugRoute
   CategoriaSlugRoute: typeof CategoriaSlugRoute
+  ComparativasSlugRoute: typeof ComparativasSlugRoute
   IosSlugRoute: typeof IosSlugRoute
   IphoneSlugRoute: typeof IphoneSlugRoute
   WatchSlugRoute: typeof WatchSlugRoute
@@ -449,6 +462,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ComparativasIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/comparativas/$slug': {
+      id: '/comparativas/$slug'
+      path: '/comparativas/$slug'
+      fullPath: '/comparativas/$slug'
+      preLoaderRoute: typeof ComparativasSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/guias/': {
       id: '/guias/'
       path: '/guias'
@@ -528,6 +548,7 @@ const rootRouteChildren: RootRouteChildren = {
   AirpodsSlugRoute: AirpodsSlugRoute,
   ArticuloSlugRoute: ArticuloSlugRoute,
   CategoriaSlugRoute: CategoriaSlugRoute,
+  ComparativasSlugRoute: ComparativasSlugRoute,
   IosSlugRoute: IosSlugRoute,
   IphoneSlugRoute: IphoneSlugRoute,
   WatchSlugRoute: WatchSlugRoute,

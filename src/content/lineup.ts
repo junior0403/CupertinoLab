@@ -33,7 +33,7 @@ export const lineup: Article[] = [
         heading: "Tres familias, no un lanzamiento",
         paragraphs: [
           "El 9 de septiembre Apple presentó el otoño entero: iPhone 18 Pro y Pro Max, AirPods 5, Watch Series 12, Watch Ultra 4 y el iPhone Duo. El 14 de septiembre llegó iOS 27. El 18, casi todo eso estaba en la tienda. El Duo no: preventa el 16 de octubre, venta el 23.",
-          "CupertinoLab separa esas fechas a propósito. Un vídeo que mezcla «el iPhone nuevo» con el plegable está hablando de dos calendarios. Si ya puedes entrar en una Apple Store y tocarlo, está en la sección de [[precios-gama-iphone|iPhone]], de [[airpods-5|AirPods]] o de [[watch-2026|Watch]]. Si todavía no, está en el [[guia-completa|Duo]].",
+          "CupertinoLab separa esas fechas a propósito. Un vídeo que mezcla «el iPhone nuevo» con el plegable está hablando de dos calendarios. Si ya puedes entrar en una Apple Store y tocarlo, está en la sección de [[precios-gama-iphone|iPhone]], de [[airpods-5|AirPods]] o de [[watch-2026|Watch]]. Si todavía no, está en el [[funciones-trucos|Duo]].",
         ],
       },
       {
@@ -112,7 +112,7 @@ export const lineup: Article[] = [
       {
         heading: "Dónde mirar después del precio",
         paragraphs: [
-          "Si dudas entre los dos nuevos, la diferencia útil no son 100 dólares: es tamaño y batería de ficha. Está en [[iphone-18-pro-vs-max|Pro contra Pro Max]]. Si dudas con el plegable, son 700 dólares más y tres semanas de espera: [[vs-iphone-18-pro-max|Duo contra Pro Max]].",
+          "Si dudas entre los dos nuevos, la diferencia útil no son 100 dólares: es tamaño y batería de ficha. Está en [[iphone-18-pro-vs-max|Pro contra Pro Max]]. Si dudas con el plegable, son 700 dólares más y tres semanas de espera: [[iphone-duo-vs-iphone-18-pro-max|Duo contra Pro Max]].",
           "AirPods y Watch no van en el presupuesto del teléfono salvo que los estés cambiando a la vez. Sus precios están en [[airpods-5|AirPods 5]] y [[watch-2026|la gama Watch]].",
         ],
       },
@@ -133,7 +133,7 @@ export const lineup: Article[] = [
         a: "En este evento, no. La gama nueva de teléfono plano son Pro y Pro Max. El no-Pro que sigue es el 17.",
       },
     ],
-    related: ["iphone-18-pro-vs-max", "otono-2026", "vs-iphone-18-pro-max"],
+    related: ["iphone-18-pro-vs-max", "otono-2026", "iphone-duo-vs-iphone-18-pro-max"],
   },
   {
     slug: "iphone-18-pro-vs-max",
@@ -170,7 +170,7 @@ export const lineup: Article[] = [
         heading: "Lo que no",
         paragraphs: [
           "Cien dólares en la entrada. La batería de vídeo que Apple publica —36 horas el Pro, 45 el Max— está medida en los modelos solo eSIM de EE. UU. y de otros once mercados. No la traslades a una variante con bandeja si tu país la tiene, ni a un día de datos y brillo alto.",
-          "Del Max, además, se ha citado hasta 30 horas de uso real. Del Pro, las crónicas del evento no ponen un equivalente igual de claro. Si tu criterio es «que me llegue al noche», el Max es la apuesta de ficha. Si tu criterio es la mano, el Pro. Ninguno de los dos es el [[guia-completa|Duo]].",
+          "Del Max, además, se ha citado hasta 30 horas de uso real. Del Pro, las crónicas del evento no ponen un equivalente igual de claro. Si tu criterio es «que me llegue al noche», el Max es la apuesta de ficha. Si tu criterio es la mano, el Pro. Ninguno de los dos es el [[precio-espana|Duo]].",
         ],
       },
       {
@@ -197,7 +197,7 @@ export const lineup: Article[] = [
         a: "Salen con él. iOS 27 está disponible desde el 14 de septiembre.",
       },
     ],
-    related: ["precios-gama-iphone", "otono-2026", "vs-iphone-18-pro-max"],
+    related: ["precios-gama-iphone", "otono-2026", "iphone-duo-vs-iphone-18-pro-max"],
   },
   {
     slug: "airpods-5",
@@ -303,7 +303,7 @@ export const lineup: Article[] = [
         heading: "Ultra 4, y el SE que no hay que olvidar",
         paragraphs: [
           "799 dólares. Caja impresa en 3D con titanio reciclado. Apple publica unas 50 horas de uso normal, 84 en bajo consumo, 25 en entreno extendido y 45 en el modo máximo de entreno. Quince minutos de carga suman hasta 18 horas. Hay correa Ocean y, aparte, el brazalete Hermès, que no entra en esos 799.",
-          "El SE 3 sigue desde 249 dólares. No tiene este sensor. Si quieres la hora, el deporte básico y no vas a mirar una puntuación de 0 a 10, el SE existe y no obliga a esperar nada: el Watch nuevo ya se vende, igual que los [[airpods-5|AirPods 5]] y a diferencia del [[guia-completa|iPhone Duo]].",
+          "El SE 3 sigue desde 249 dólares. No tiene este sensor. Si quieres la hora, el deporte básico y no vas a mirar una puntuación de 0 a 10, el SE existe y no obliga a esperar nada: el Watch nuevo ya se vende, igual que los [[airpods-5|AirPods 5]] y a diferencia del [[precio-espana|iPhone Duo]].",
         ],
       },
     ],

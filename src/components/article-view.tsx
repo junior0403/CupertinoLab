@@ -2,7 +2,8 @@ import { Link, notFound } from "@tanstack/react-router";
 import { ArticleCard, ArticleCover, ArticleLink, articleSectionName } from "@/components/article-card";
 import { RichText, Shell, SpecTable } from "@/components/chrome";
 import { articles, confidenceLabel, getArticle, type Article } from "@/content/articles";
-import { sections, sectionsFor, type CategorySlug } from "@/content/taxonomy";
+import { articlePath, sections, sectionsFor, type CategorySlug } from "@/content/taxonomy";
+import { coverSrc } from "@/components/article-card";
 
 export function loadDeskArticle(slug: string, category: CategorySlug) {
   const article = getArticle(slug);
@@ -12,12 +13,55 @@ export function loadDeskArticle(slug: string, category: CategorySlug) {
 
 export function articleMeta(article: Article | undefined) {
   if (!article) return { meta: [] };
+  const title = article.metaTitle ?? `${article.title} · CupertinoLab`;
+  const description = article.metaDescription ?? article.dek;
+  const path = articlePath(article);
+  const canonical = `https://cupertinolab.space${path}`;
+  const image = `https://cupertinolab.space${coverSrc(article)}`;
+  const section = sectionsFor(article)
+    .map((slug) => sections.find((item) => item.slug === slug))
+    .find((item) => item !== undefined);
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Inicio", item: "https://cupertinolab.space/" },
+      ...(section
+        ? [{ "@type": "ListItem", position: 2, name: section.name, item: `https://cupertinolab.space${section.path}` }]
+        : []),
+      {
+        "@type": "ListItem",
+        position: section ? 3 : 2,
+        name: article.title,
+        item: canonical,
+      },
+    ],
+  };
+  const articleLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description,
+    dateModified: "2026-09-30",
+    inLanguage: "es",
+    mainEntityOfPage: canonical,
+    image,
+    author: { "@type": "Organization", name: "CupertinoLab" },
+    publisher: { "@type": "Organization", name: "CupertinoLab" },
+  };
   return {
     meta: [
-      { title: `${article.title} · CupertinoLab` },
-      { name: "description", content: article.dek },
-      { property: "og:title", content: article.title },
-      { property: "og:description", content: article.dek },
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:url", content: canonical },
+      { property: "og:image", content: image },
+    ],
+    links: [{ rel: "canonical", href: canonical }],
+    scripts: [
+      { type: "application/ld+json", children: JSON.stringify(breadcrumb) },
+      { type: "application/ld+json", children: JSON.stringify(articleLd) },
     ],
   };
 }
@@ -79,6 +123,16 @@ export function ArticleView({ article }: { article: Article }) {
                 <RichText text={paragraph} />
               </p>
             ))}
+            {section.subsections?.map((sub) => (
+              <div key={sub.heading} className="mt-6">
+                <h3 className="font-serif text-xl text-ink">{sub.heading}</h3>
+                {sub.paragraphs.map((paragraph) => (
+                  <p key={paragraph.slice(0, 48)} className="mt-3 font-sans text-base leading-relaxed text-ink">
+                    <RichText text={paragraph} />
+                  </p>
+                ))}
+              </div>
+            ))}
             {index === 0 && article.table ? (
               <SpecTable
                 caption={article.table.caption}
@@ -121,39 +175,35 @@ export function ArticleView({ article }: { article: Article }) {
         <footer className="mt-10 border-t border-line pt-4">
           <h2 className="font-serif text-2xl text-ink">Fuentes</h2>
           <p className="mt-3 font-sans text-sm leading-relaxed text-muted">
-            Fuentes de trabajo, septiembre de 2026: ficha de Apple y crónicas de Reuters, Ars Technica,
-            MacRumors, MacObserver y 9to5Mac. CupertinoLab no está afiliado a Apple.
+            {article.sources
+              ? "Cada cifra de esta ficha sale de las páginas enlazadas. Lo que no está ahí no se presenta como hecho. CupertinoLab no está afiliado a Apple ni a Samsung."
+              : "Fuentes de trabajo, septiembre de 2026: ficha de Apple y crónicas de Reuters, Ars Technica, MacRumors, MacObserver y 9to5Mac. CupertinoLab no está afiliado a Apple."}
             {article.category === "duo"
               ? " El Duo no tiene todavía unidades de venta: el envío empieza el 23 de octubre."
               : " Lo que lleva días en tienda se cita como ficha, no como prueba propia."}
           </p>
           <p className="mt-3 font-sans text-sm">
-            <a
-              className="underline underline-offset-4"
-              href="https://www.reuters.com/business/retail-consumer/apple-expected-unveil-first-folding-phone-with-new-ceo-ternus-command-2026-09-09/"
-              rel="noreferrer"
-              target="_blank"
-            >
-              Reuters
-            </a>
-            {" · "}
-            <a
-              className="underline underline-offset-4"
-              href="https://arstechnica.com/gadgets/2026/09/apples-long-rumored-foldable-becomes-reality-with-the-2000-iphone-duo/"
-              rel="noreferrer"
-              target="_blank"
-            >
-              Ars Technica
-            </a>
-            {" · "}
-            <a
-              className="underline underline-offset-4"
-              href="https://9to5mac.com/2026/09/18/apple-vp-of-hardware-talks-iphone-duo-durability-crease-hinge-and-more/"
-              rel="noreferrer"
-              target="_blank"
-            >
-              9to5Mac
-            </a>
+            {(article.sources ?? [
+              {
+                label: "Reuters",
+                href: "https://www.reuters.com/business/retail-consumer/apple-expected-unveil-first-folding-phone-with-new-ceo-ternus-command-2026-09-09/",
+              },
+              {
+                label: "Ars Technica",
+                href: "https://arstechnica.com/gadgets/2026/09/apples-long-rumored-foldable-becomes-reality-with-the-2000-iphone-duo/",
+              },
+              {
+                label: "9to5Mac",
+                href: "https://9to5mac.com/2026/09/18/apple-vp-of-hardware-talks-iphone-duo-durability-crease-hinge-and-more/",
+              },
+            ]).map((source, index) => (
+              <span key={source.href}>
+                {index > 0 ? " · " : null}
+                <a className="underline underline-offset-4" href={source.href} rel="noreferrer" target="_blank">
+                  {source.label}
+                </a>
+              </span>
+            ))}
           </p>
         </footer>
 

@@ -83,19 +83,11 @@ export type SectionSlug = (typeof sections)[number]["slug"];
 
 const comparativas = new Set([
   "iphone-18-pro-vs-max",
-  "vs-iphone-18-pro-max",
-  "vs-galaxy-z-fold",
+  "iphone-duo-vs-iphone-18-pro-max",
+  "iphone-duo-vs-galaxy-z-fold8",
 ]);
 
-const guias = new Set([
-  "guia-completa",
-  "trucos",
-  "funciones-ocultas",
-  "dos-aplicaciones",
-  "apple-pencil",
-  "antes-de-comprar",
-  "como-funciona-la-bisagra",
-]);
+const guias = new Set(["funciones-trucos"]);
 
 const accesorios = new Set([
   "mejores-fundas",
@@ -122,6 +114,12 @@ export function sectionBySlug(slug: string) {
 }
 
 export function articlePath(article: { slug: string; category: CategorySlug }) {
+  if (
+    article.slug === "iphone-duo-vs-iphone-18-pro-max" ||
+    article.slug === "iphone-duo-vs-galaxy-z-fold8"
+  ) {
+    return `/comparativas/${article.slug}`;
+  }
   if (article.category === "duo") return `/iphone/iphone-duo/${article.slug}`;
   if (article.category === "iphone") return `/iphone/${article.slug}`;
   if (article.category === "airpods") return `/airpods/${article.slug}`;
@@ -145,8 +143,30 @@ export function categoryBySlug(slug: string) {
 export const featuredSlug = "otono-2026";
 
 export const duoSpotlight = [
-  "guia-completa",
-  "cuanto-cuesta",
-  "vs-iphone-18-pro-max",
-  "pliegue-en-la-pantalla",
+  "precio-espana",
+  "iphone-duo-vs-iphone-18-pro-max",
+  "pliegue-pantalla",
+  "cuantas-veces-se-puede-doblar-iphone-duo",
 ] as const;
+
+export const legacyArticleHrefs: Record<string, string> = {
+  "guia-completa": "/iphone/iphone-duo/funciones-trucos",
+  "cuantas-veces-se-puede-doblar": "/iphone/iphone-duo/cuantas-veces-se-puede-doblar-iphone-duo",
+  "pliegue-en-la-pantalla": "/iphone/iphone-duo/pliegue-pantalla",
+  "resistente-al-agua": "/iphone/iphone-duo/resistente-agua-ip68",
+  "cuanto-cuesta": "/iphone/iphone-duo/precio-espana",
+  "vs-iphone-18-pro-max": "/comparativas/iphone-duo-vs-iphone-18-pro-max",
+  "vs-galaxy-z-fold": "/comparativas/iphone-duo-vs-galaxy-z-fold8",
+  bateria: "/iphone/iphone-duo/cuanto-dura-bateria",
+  "sim-fisica": "/iphone/iphone-duo/sim-fisica-esim",
+  "funciones-ocultas": "/iphone/iphone-duo/funciones-trucos",
+  trucos: "/iphone/iphone-duo/funciones-trucos",
+  "dos-aplicaciones": "/iphone/iphone-duo/funciones-trucos",
+  "apple-pencil": "/iphone/iphone-duo/funciones-trucos",
+  "mejores-fundas": "/iphone/iphone-duo/que-pasa-si-se-cae",
+  "mejores-accesorios": "/iphone/iphone-duo/que-pasa-si-se-cae",
+  "necesita-funda": "/iphone/iphone-duo/que-pasa-si-se-cae",
+  "se-raya-la-pantalla": "/iphone/iphone-duo/pliegue-pantalla",
+  "como-funciona-la-bisagra": "/iphone/iphone-duo/cuantas-veces-se-puede-doblar-iphone-duo",
+  "antes-de-comprar": "/iphone/iphone-duo/precio-espana",
+};

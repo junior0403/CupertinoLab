@@ -18,6 +18,16 @@ export function ArticleLink({
   children: ReactNode;
 }) {
   const classNames = className ?? "";
+  if (
+    article.slug === "iphone-duo-vs-iphone-18-pro-max" ||
+    article.slug === "iphone-duo-vs-galaxy-z-fold8"
+  ) {
+    return (
+      <Link to="/comparativas/$slug" params={{ slug: article.slug }} className={classNames}>
+        {children}
+      </Link>
+    );
+  }
   if (article.category === "duo") {
     return (
       <Link to="/iphone/iphone-duo/$slug" params={{ slug: article.slug }} className={classNames}>
@@ -80,13 +90,23 @@ const coverLabel: Record<string, string> = {
   "airpods-5": "AirPods",
   "watch-2026": "Watch",
   "ios-26": "iOS 26",
+  "cuantas-veces-se-puede-doblar-iphone-duo": "Ciclos",
+  "pliegue-pantalla": "Pliegue",
+  "resistente-agua-ip68": "IP68",
+  "que-pasa-si-se-cae": "Caída",
+  "precio-espana": "Precio",
+  "iphone-duo-vs-iphone-18-pro-max": "Contra el Max",
+  "iphone-duo-vs-galaxy-z-fold8": "Contra el Fold",
+  "cuanto-dura-bateria": "Batería",
+  "sim-fisica-esim": "eSIM",
+  "funciones-trucos": "Funciones",
 };
 
-function coverSrc(article: Pick<Article, "slug" | "category">) {
+export function coverSrc(article: Pick<Article, "slug" | "category">) {
   if (article.slug === "ios-26") return "/covers/ios.jpg";
   if (article.slug === "otono-2026") return "/covers/iphone-glacier.jpg";
   if (article.slug === "precios-gama-iphone") return "/covers/iphone.jpg";
-  if (article.slug === "iphone-18-pro-vs-max" || article.slug === "vs-iphone-18-pro-max") {
+  if (article.slug === "iphone-18-pro-vs-max") {
     return "/covers/compare.jpg";
   }
   if (article.slug === "apple-pencil") return "/covers/pencil.jpg";
@@ -107,7 +127,7 @@ export function ArticleCover({
   article,
   priority = false,
 }: {
-  article: Pick<Article, "title" | "slug" | "category">;
+  article: Pick<Article, "title" | "slug" | "category" | "coverAlt">;
   priority?: boolean;
 }) {
   const label = coverLabel[article.slug] ?? article.title.split(" ").slice(0, 3).join(" ");
@@ -115,7 +135,7 @@ export function ArticleCover({
     <div className="relative aspect-[3/2] overflow-hidden bg-card">
       <img
         src={coverSrc(article)}
-        alt=""
+        alt={article.coverAlt ?? ""}
         width={1400}
         height={900}
         loading={priority ? "eager" : "lazy"}
