@@ -119,6 +119,19 @@ export function coverSrc(article: Pick<Article, "slug" | "category">) {
   }
   if (article.category === "airpods") return "/covers/airpods.jpg";
   if (article.category === "watch") return "/covers/watch.jpg";
+  const duoCover: Record<string, string> = {
+    "precio-espana": "/covers/duo-precio.jpg",
+    "funciones-trucos": "/covers/duo-funciones.jpg",
+    "cuanto-dura-bateria": "/covers/duo-bateria.jpg",
+    "sim-fisica-esim": "/covers/duo-sim.jpg",
+    "pliegue-pantalla": "/covers/duo-pliegue.jpg",
+    "cuantas-veces-se-puede-doblar-iphone-duo": "/covers/duo-bisagra.jpg",
+    "resistente-agua-ip68": "/covers/duo-agua.jpg",
+    "que-pasa-si-se-cae": "/covers/duo-caida.jpg",
+    "iphone-duo-vs-iphone-18-pro-max": "/covers/iphone-front.jpg",
+    "iphone-duo-vs-galaxy-z-fold8": "/covers/duo-fold.jpg",
+  };
+  if (duoCover[article.slug]) return duoCover[article.slug];
   if (article.category === "duo") return "/covers/duo.jpg";
   return "/covers/iphone-front.jpg";
 }

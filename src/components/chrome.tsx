@@ -172,7 +172,7 @@ export function SiteFooter() {
             vendemos sus productos.
           </p>
           <p className="mt-4 font-sans text-xs leading-relaxed text-muted">
-            iPhone 18: fotos de Kyu3a y 茅野ふたば en Wikimedia Commons, CC BY-SA 4.0. Pantalla de iOS 26: Sla1708, misma licencia. El plegable:{" "}
+            iPhone 18: fotos de Kyu3a y 茅野ふたば en Wikimedia Commons, CC BY-SA 4.0. Pantalla de iOS 26: Sla1708, misma licencia. El plegable de portada:{" "}
             <a
               className="underline underline-offset-4"
               href="https://commons.wikimedia.org/wiki/File:Apple_foldable_phone.jpg"
@@ -181,7 +181,7 @@ export function SiteFooter() {
             >
               ΚΑ ΚΙΤ
             </a>
-            , misma licencia. AirPods, Watch y funda: Pexels y Unsplash.
+            , misma licencia. Agua y pantalla rota: Pexels (Erlan Shatmanov, Towfiqu barbhuiya). Apple Store: midnightbreakfastcafe, CC BY 2.0. Fold y carga: Matabalt y Wikideas1, CC0. SIM: Subhrajyoti07, CC BY-SA 4.0. Bisagra: Ka Kit Pang, CC BY-SA. AirPods, Watch y funda: Pexels y Unsplash.
           </p>
         </div>
         <nav aria-label="Secciones del pie" className="flex flex-col gap-2">

@@ -33,9 +33,6 @@ const samsungNews = {
   href: "https://news.samsung.com/de/samsung-galaxy-z-fold8-ultra-fold8-und-flip8-fur-jeden-lifestyle-ein-faltbares-gerat",
 };
 
-const foldPhoto =
-  "Teléfono plegable a medio abrir, fotografiado por ΚΑ ΚΙΤ y publicado en Wikimedia Commons (CC BY-SA). No es una foto oficial del iPhone Duo.";
-
 export const duoLote: Article[] = [
   {
     slug: "cuantas-veces-se-puede-doblar-iphone-duo",
@@ -49,7 +46,8 @@ export const duoLote: Article[] = [
     minutes: 6,
     updated,
     confidence: "pendiente",
-    coverAlt: `${foldPhoto} Ilustra la ficha sobre los ciclos de plegado, que Apple no cifra.`,
+    coverAlt:
+      "Plegables Samsung vistos de canto, con la bisagra a la vista. Foto de Ka Kit Pang, CC BY-SA. No es un ensayo de ciclos del iPhone Duo.",
     metaTitle: "¿Cuántas veces se dobla el iPhone Duo?",
     metaDescription:
       "Apple no da una cifra de ciclos del iPhone Duo. Qué dice de la bisagra, qué significa resistencia y qué prueba independiente falta.",
@@ -128,7 +126,8 @@ export const duoLote: Article[] = [
     minutes: 6,
     updated,
     confidence: "pendiente",
-    coverAlt: `${foldPhoto} Ilustra la ficha sobre el pliegue de la pantalla interior.`,
+    coverAlt:
+      "Detalle de la pantalla abierta de un Galaxy Fold7 en una tienda. Foto de Matabalt, CC0. No mide el pliegue del iPhone Duo.",
     metaTitle: "¿El iPhone Duo tiene pliegue en la pantalla?",
     metaDescription:
       "Qué dice Apple del pliegue del iPhone Duo, qué hace el acabado nanotexturizado y por qué «menos visible» no significa invisible.",
@@ -194,7 +193,8 @@ export const duoLote: Article[] = [
     minutes: 6,
     updated,
     confidence: "ficha",
-    coverAlt: `${foldPhoto} Ilustra la ficha sobre la resistencia al agua IP68 del iPhone Duo.`,
+    coverAlt:
+      "Gotas de agua sobre un teléfono. Foto de Erlan Shatmanov en Pexels. No es una prueba IP68 del iPhone Duo.",
     metaTitle: "¿El iPhone Duo es resistente al agua? IP68",
     metaDescription:
       "El iPhone Duo tiene IP68: hasta 6 metros y 30 minutos en laboratorio. Qué significa, qué no cubre y qué precauciones deja Apple.",
@@ -266,7 +266,8 @@ export const duoLote: Article[] = [
     minutes: 7,
     updated,
     confidence: "pendiente",
-    coverAlt: `${foldPhoto} Ilustra la ficha sobre caídas. No muestra una prueba de caída.`,
+    coverAlt:
+      "Pantallas de móvil agrietadas. Foto de Towfiqu barbhuiya en Pexels. No es una prueba de caída del iPhone Duo.",
     metaTitle: "¿Qué pasa si se cae un iPhone Duo?",
     metaDescription:
       "Apple no publica un drop test del iPhone Duo. Qué materiales declara y qué piezas pueden sufrir en una caída, sin inventar alturas.",
@@ -350,7 +351,8 @@ export const duoLote: Article[] = [
     minutes: 6,
     updated,
     confidence: "ficha",
-    coverAlt: `${foldPhoto} Ilustra la ficha de precio en España. No indica el precio por sí sola.`,
+    coverAlt:
+      "Interior de una Apple Store. Foto de midnightbreakfastcafe, CC BY 2.0. No muestra el precio del iPhone Duo.",
     metaTitle: "Precio del iPhone Duo en España",
     metaDescription:
       "Precios del iPhone Duo en la Apple Store española a 30 de septiembre de 2026: 256 GB, 512 GB, 1 TB y 2 TB, colores y fechas.",
@@ -421,7 +423,8 @@ export const duoLote: Article[] = [
     minutes: 8,
     updated,
     confidence: "ficha",
-    coverAlt: `${foldPhoto} Ilustra la comparativa con el iPhone 18 Pro Max. El Pro Max no aparece en la foto.`,
+    coverAlt:
+      "iPhone de frente. No es una foto oficial de la comparativa: el iPhone 18 Pro Max se describe en la ficha, no en la imagen.",
     metaTitle: "iPhone Duo vs iPhone 18 Pro Max",
     metaDescription:
       "Comparativa con fichas de Apple: pantallas, batería de laboratorio, cámaras, resistencia, SIM y precio de entrada en España.",
@@ -507,7 +510,8 @@ export const duoLote: Article[] = [
     minutes: 8,
     updated,
     confidence: "ficha",
-    coverAlt: `${foldPhoto} Ilustra la comparativa con el Galaxy Z Fold8. No es una foto del Fold8 ni una foto oficial de Apple.`,
+    coverAlt:
+      "Galaxy Fold7 abierto en una tienda. Foto de Matabalt, CC0. No es el Fold8 ni el iPhone Duo.",
     metaTitle: "iPhone Duo vs Galaxy Z Fold8",
     metaDescription:
       "Comparativa solo con fichas de Apple y Samsung: pantallas, peso publicado, agua, batería, sistema y precio cuando existe.",
@@ -593,7 +597,8 @@ export const duoLote: Article[] = [
     minutes: 7,
     updated,
     confidence: "ficha",
-    coverAlt: `${foldPhoto} Ilustra la ficha de batería. La foto no mide la autonomía.`,
+    coverAlt:
+      "Cable USB-C junto a un puerto de carga. Foto de Wikideas1, CC0. No mide la batería del iPhone Duo.",
     metaTitle: "Batería del iPhone Duo: cifras de Apple",
     metaDescription:
       "Horas oficiales del iPhone Duo en uso, vídeo y streaming, en cada pantalla, más la carga por cable y MagSafe. No es autonomía real.",
@@ -668,7 +673,8 @@ export const duoLote: Article[] = [
     minutes: 6,
     updated,
     confidence: "ficha",
-    coverAlt: `${foldPhoto} Ilustra la ficha sobre eSIM. El teléfono de la foto no demuestra una bandeja SIM.`,
+    coverAlt:
+      "Nano-SIM de cerca. Foto de Subhrajyoti07, CC BY-SA 4.0. El iPhone Duo no usa esta tarjeta.",
     metaTitle: "¿El iPhone Duo tiene SIM física o solo eSIM?",
     metaDescription:
       "El iPhone Duo no admite SIM física. Dos eSIM activas, ocho o más guardadas, y qué debe mirar quien viene de una tarjeta.",
@@ -728,7 +734,8 @@ export const duoLote: Article[] = [
     minutes: 8,
     updated,
     confidence: "ficha",
-    coverAlt: `${foldPhoto} Ilustra la lista de funciones oficiales del iPhone Duo.`,
+    coverAlt:
+      "Iconos en la pantalla abierta de un Galaxy Fold7. Foto de Matabalt, CC0. Ilustra la ficha de funciones, no es el iPhone Duo.",
     metaTitle: "15 funciones del iPhone Duo",
     metaDescription:
       "Split View, pares de apps, Duo Preview, Pencil anunciado y el resto de funciones que Apple ya ha documentado en el iPhone Duo.",
