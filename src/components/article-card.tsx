@@ -48,28 +48,28 @@ export function ArticleLink({
 
 export function ArticleCover({
   article,
-  priority = false,
+  tone = "paper",
 }: {
   article: Pick<Article, "title" | "slug" | "category">;
-  priority?: boolean;
+  tone?: "paper" | "inverse";
 }) {
   const label = articleSectionName(article);
+  const onDark = tone === "inverse";
+  const field =
+    onDark ? "bg-paper text-ink" : article.category === "duo" ? "bg-oxide text-paper" : "bg-inverse text-paper";
+  const kicker = onDark ? "text-oxide" : "text-sand";
+
   return (
     <div
       role="img"
       aria-label={`Portada editorial: ${article.title}`}
-      data-priority={priority ? "high" : "low"}
-      className="relative aspect-[16/10] overflow-hidden border border-line bg-card"
+      className={`relative aspect-[16/10] overflow-hidden ${field}`}
     >
-      <svg viewBox="0 0 640 400" className="h-full w-full" aria-hidden="true">
-        <rect width="640" height="400" fill="#faf7f2" />
-        <path d="M48 48h80M48 64h48" stroke="#7a2a0f" strokeWidth="2" />
-        <circle cx="560" cy="72" r="28" fill="none" stroke="#1c1915" strokeWidth="1.5" />
-        <circle cx="560" cy="72" r="4" fill="#7a2a0f" />
-        <path d="M48 332h544" stroke="#e0d6c6" strokeWidth="1" />
-      </svg>
-      <p className="absolute bottom-4 left-4 font-sans text-xs font-medium tracking-widest text-oxide uppercase">
+      <p className={`absolute top-4 left-4 font-sans text-xs font-medium tracking-widest uppercase ${kicker}`}>
         {label}
+      </p>
+      <p className="absolute inset-x-4 bottom-4 line-clamp-4 font-serif text-[1.65rem] leading-[1.05] sm:text-4xl">
+        {article.title.replace(/[¿?]/g, "")}
       </p>
     </div>
   );
@@ -85,7 +85,7 @@ export function ArticleCard({
   const inverse = tone === "inverse";
   return (
     <ArticleLink article={article} className="group block">
-      <ArticleCover article={article} />
+      <ArticleCover article={article} tone={tone} />
       <p
         className={`mt-3 font-sans text-xs font-medium tracking-widest uppercase ${inverse ? "text-sand" : "text-oxide"}`}
       >
