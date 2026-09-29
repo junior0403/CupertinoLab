@@ -46,7 +46,7 @@ function Home() {
             Destacado
           </h2>
           <div className="mt-4 max-w-3xl">
-            <ArticleCard article={featured} />
+            <ArticleCard article={featured} priority />
           </div>
         </section>
       ) : null}

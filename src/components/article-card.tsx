@@ -46,31 +46,43 @@ export function ArticleLink({
   );
 }
 
+function coverSrc(article: Pick<Article, "slug" | "category">) {
+  if (article.slug === "otono-2026") return "/covers/lineup.jpg";
+  if (article.slug === "apple-pencil") return "/covers/pencil.jpg";
+  if (
+    article.slug === "mejores-fundas" ||
+    article.slug === "mejores-accesorios" ||
+    article.slug === "necesita-funda"
+  ) {
+    return "/covers/case.jpg";
+  }
+  if (article.slug === "vs-iphone-18-pro-max" || article.slug === "vs-galaxy-z-fold") {
+    return "/covers/compare.jpg";
+  }
+  if (article.category === "airpods") return "/covers/airpods.jpg";
+  if (article.category === "watch") return "/covers/watch.jpg";
+  if (article.category === "duo") return "/covers/duo.jpg";
+  return "/covers/iphone.jpg";
+}
+
 export function ArticleCover({
   article,
-  tone = "paper",
+  priority = false,
 }: {
   article: Pick<Article, "title" | "slug" | "category">;
-  tone?: "paper" | "inverse";
+  priority?: boolean;
 }) {
-  const label = articleSectionName(article);
-  const onDark = tone === "inverse";
-  const field =
-    onDark ? "bg-paper text-ink" : article.category === "duo" ? "bg-oxide text-paper" : "bg-inverse text-paper";
-  const kicker = onDark ? "text-oxide" : "text-sand";
-
   return (
-    <div
-      role="img"
-      aria-label={`Portada editorial: ${article.title}`}
-      className={`relative aspect-[16/10] overflow-hidden ${field}`}
-    >
-      <p className={`absolute top-4 left-4 font-sans text-xs font-medium tracking-widest uppercase ${kicker}`}>
-        {label}
-      </p>
-      <p className="absolute inset-x-4 bottom-4 line-clamp-4 font-serif text-[1.65rem] leading-[1.05] sm:text-4xl">
-        {article.title.replace(/[¿?]/g, "")}
-      </p>
+    <div className="relative aspect-[3/2] overflow-hidden bg-card">
+      <img
+        src={coverSrc(article)}
+        alt=""
+        width={1200}
+        height={800}
+        loading={priority ? "eager" : "lazy"}
+        decoding="async"
+        className="h-full w-full object-cover"
+      />
     </div>
   );
 }
@@ -78,14 +90,16 @@ export function ArticleCover({
 export function ArticleCard({
   article,
   tone = "paper",
+  priority = false,
 }: {
   article: Article;
   tone?: "paper" | "inverse";
+  priority?: boolean;
 }) {
   const inverse = tone === "inverse";
   return (
     <ArticleLink article={article} className="group block">
-      <ArticleCover article={article} tone={tone} />
+      <ArticleCover article={article} priority={priority} />
       <p
         className={`mt-3 font-sans text-xs font-medium tracking-widest uppercase ${inverse ? "text-sand" : "text-oxide"}`}
       >

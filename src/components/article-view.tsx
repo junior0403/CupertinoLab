@@ -61,7 +61,7 @@ export function ArticleView({ article }: { article: Article }) {
           {confidenceLabel[article.confidence]}
         </p>
         <div className="mt-6">
-          <ArticleCover article={article} />
+          <ArticleCover article={article} priority />
         </div>
 
         <p className="mt-8 font-sans text-xs font-medium tracking-widest text-oxide uppercase">
