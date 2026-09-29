@@ -39,6 +39,13 @@ export function ArticleLink({
       </Link>
     );
   }
+  if (article.category === "ios") {
+    return (
+      <Link to="/ios/$slug" params={{ slug: article.slug }} className={classNames}>
+        {children}
+      </Link>
+    );
+  }
   return (
     <Link to="/watch/$slug" params={{ slug: article.slug }} className={classNames}>
       {children}
@@ -72,9 +79,11 @@ const coverLabel: Record<string, string> = {
   "antes-de-comprar": "Antes de comprar",
   "airpods-5": "AirPods",
   "watch-2026": "Watch",
+  "ios-26": "iOS 26",
 };
 
 function coverSrc(article: Pick<Article, "slug" | "category">) {
+  if (article.slug === "ios-26") return "/covers/ios.jpg";
   if (article.slug === "otono-2026") return "/covers/iphone-glacier.jpg";
   if (article.slug === "precios-gama-iphone") return "/covers/iphone.jpg";
   if (article.slug === "iphone-18-pro-vs-max" || article.slug === "vs-iphone-18-pro-max") {

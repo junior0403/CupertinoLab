@@ -9,6 +9,7 @@ const nav = [
   { href: "/iphone", label: "iPhone" },
   { href: "/airpods", label: "AirPods" },
   { href: "/watch", label: "Watch" },
+  { href: "/ios", label: "iOS" },
   { href: "/iphone/iphone-duo", label: "Duo" },
   { href: "/mapa", label: "Mapa" },
   { href: "/editorial", label: "Método" },
@@ -171,7 +172,7 @@ export function SiteFooter() {
             vendemos sus productos.
           </p>
           <p className="mt-4 font-sans text-xs leading-relaxed text-muted">
-            iPhone 18: fotos de Kyu3a y 茅野ふたば en Wikimedia Commons, CC BY-SA 4.0. El plegable:{" "}
+            iPhone 18: fotos de Kyu3a y 茅野ふたば en Wikimedia Commons, CC BY-SA 4.0. Pantalla de iOS 26: Sla1708, misma licencia. El plegable:{" "}
             <a
               className="underline underline-offset-4"
               href="https://commons.wikimedia.org/wiki/File:Apple_foldable_phone.jpg"

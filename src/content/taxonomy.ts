@@ -19,6 +19,11 @@ export const categories = [
     name: "Duo",
     dek: "El plegable. Una sección, no el sitio entero. Preventa el 16 de octubre.",
   },
+  {
+    slug: "ios",
+    name: "iOS",
+    dek: "iOS 26: Liquid Glass, traducción en vivo y los fallos que Apple acabó escribiendo.",
+  },
 ] as const;
 
 export type CategorySlug = (typeof categories)[number]["slug"];
@@ -40,7 +45,7 @@ export const sections = [
     slug: "ios",
     name: "iOS",
     path: "/ios",
-    dek: "El sistema. Esta sección espera fichas; todavía no hay ninguna.",
+    dek: "Liquid Glass, traducción en vivo y los fallos que los usuarios reportaron.",
   },
   {
     slug: "airpods",
@@ -105,6 +110,7 @@ export function sectionsFor(article: { slug: string; category: CategorySlug }): 
   if (article.category === "duo") rails.push("iphone-duo");
   if (article.category === "airpods") rails.push("airpods");
   if (article.category === "watch") rails.push("watch");
+  if (article.category === "ios") rails.push("ios");
   if (comparativas.has(article.slug)) rails.push("comparativas");
   if (guias.has(article.slug)) rails.push("guias");
   if (accesorios.has(article.slug)) rails.push("accesorios");
@@ -119,6 +125,7 @@ export function articlePath(article: { slug: string; category: CategorySlug }) {
   if (article.category === "duo") return `/iphone/iphone-duo/${article.slug}`;
   if (article.category === "iphone") return `/iphone/${article.slug}`;
   if (article.category === "airpods") return `/airpods/${article.slug}`;
+  if (article.category === "ios") return `/ios/${article.slug}`;
   return `/watch/${article.slug}`;
 }
 
