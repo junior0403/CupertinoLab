@@ -46,8 +46,40 @@ export function ArticleLink({
   );
 }
 
+const coverLabel: Record<string, string> = {
+  "otono-2026": "Otoño",
+  "precios-gama-iphone": "Precios",
+  "iphone-18-pro-vs-max": "Pro o Max",
+  "guia-completa": "Guía",
+  "cuantas-veces-se-puede-doblar": "Ciclos",
+  "pliegue-en-la-pantalla": "Pliegue",
+  "resistente-al-agua": "Agua",
+  "que-pasa-si-se-cae": "Caída",
+  "cuanto-cuesta": "Precio",
+  "vs-iphone-18-pro-max": "Contra el Max",
+  "vs-galaxy-z-fold": "Contra el Fold",
+  bateria: "Batería",
+  "sim-fisica": "eSIM",
+  "funciones-ocultas": "Funciones",
+  trucos: "Trucos",
+  "dos-aplicaciones": "Dos apps",
+  "apple-pencil": "Pencil",
+  "mejores-fundas": "Fundas",
+  "mejores-accesorios": "Accesorios",
+  "necesita-funda": "Funda",
+  "se-raya-la-pantalla": "Rayado",
+  "como-funciona-la-bisagra": "Bisagra",
+  "antes-de-comprar": "Antes de comprar",
+  "airpods-5": "AirPods",
+  "watch-2026": "Watch",
+};
+
 function coverSrc(article: Pick<Article, "slug" | "category">) {
-  if (article.slug === "otono-2026") return "/covers/lineup.jpg";
+  if (article.slug === "otono-2026") return "/covers/iphone-glacier.jpg";
+  if (article.slug === "precios-gama-iphone") return "/covers/iphone.jpg";
+  if (article.slug === "iphone-18-pro-vs-max" || article.slug === "vs-iphone-18-pro-max") {
+    return "/covers/compare.jpg";
+  }
   if (article.slug === "apple-pencil") return "/covers/pencil.jpg";
   if (
     article.slug === "mejores-fundas" ||
@@ -56,13 +88,10 @@ function coverSrc(article: Pick<Article, "slug" | "category">) {
   ) {
     return "/covers/case.jpg";
   }
-  if (article.slug === "vs-iphone-18-pro-max" || article.slug === "vs-galaxy-z-fold") {
-    return "/covers/compare.jpg";
-  }
   if (article.category === "airpods") return "/covers/airpods.jpg";
   if (article.category === "watch") return "/covers/watch.jpg";
   if (article.category === "duo") return "/covers/duo.jpg";
-  return "/covers/iphone.jpg";
+  return "/covers/iphone-front.jpg";
 }
 
 export function ArticleCover({
@@ -72,17 +101,21 @@ export function ArticleCover({
   article: Pick<Article, "title" | "slug" | "category">;
   priority?: boolean;
 }) {
+  const label = coverLabel[article.slug] ?? article.title.split(" ").slice(0, 3).join(" ");
   return (
     <div className="relative aspect-[3/2] overflow-hidden bg-card">
       <img
         src={coverSrc(article)}
         alt=""
-        width={1200}
-        height={800}
+        width={1400}
+        height={900}
         loading={priority ? "eager" : "lazy"}
         decoding="async"
-        className="h-full w-full object-cover"
+        className="h-full w-full object-cover object-center"
       />
+      <p className="absolute inset-x-0 bottom-0 bg-ink/80 px-3 py-2 font-serif text-lg leading-tight text-paper">
+        {label}
+      </p>
     </div>
   );
 }

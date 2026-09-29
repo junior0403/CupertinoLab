@@ -171,16 +171,16 @@ export function SiteFooter() {
             vendemos sus productos.
           </p>
           <p className="mt-4 font-sans text-xs leading-relaxed text-muted">
-            Fotos de Pexels y Unsplash. El plegable:{" "}
+            iPhone 18: fotos de Kyu3a y 茅野ふたば en Wikimedia Commons, CC BY-SA 4.0. El plegable:{" "}
             <a
               className="underline underline-offset-4"
               href="https://commons.wikimedia.org/wiki/File:Apple_foldable_phone.jpg"
               rel="noreferrer"
               target="_blank"
             >
-              ΚΑ ΚΙΤ, Wikimedia Commons
+              ΚΑ ΚΙΤ
             </a>
-            , CC BY-SA 4.0.
+            , misma licencia. AirPods, Watch y funda: Pexels y Unsplash.
           </p>
         </div>
         <nav aria-label="Secciones del pie" className="flex flex-col gap-2">
