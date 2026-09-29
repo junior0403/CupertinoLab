@@ -1,0 +1,11 @@
+node_modules
+dist
+.vercel
+.netlify
+.grok
+screenshots
+artifacts
+*.zip
+.DS_Store
+.project_id
+.node_modules.lock
