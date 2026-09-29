@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { ArticleCard } from "@/components/article-card";
+import { ArticleCard, ArticleLink, coverSrc } from "@/components/article-card";
 import { Shell } from "@/components/chrome";
 import { articles, type Article } from "@/content/articles";
-import { sectionBySlug, sectionsFor, type SectionSlug } from "@/content/taxonomy";
+import { duoChapters, sectionBySlug, sectionsFor, type SectionSlug } from "@/content/taxonomy";
 
 export function articlesInSection(slug: SectionSlug) {
   return articles.filter((article) => sectionsFor(article).includes(slug));
@@ -45,6 +45,8 @@ export function SectionView({ slug }: { slug: SectionSlug }) {
         <p className="mt-8 border-t border-line pt-6 font-sans text-base text-muted">
           Esta sección está abierta. Todavía no hay fichas.
         </p>
+      ) : slug === "iphone-duo" ? (
+        <DuoPath />
       ) : (
         <ul className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-3">
           {items.map((article) => (
@@ -62,4 +64,37 @@ export function pickArticles(slugs: readonly string[]) {
   return slugs
     .map((slug) => articles.find((article) => article.slug === slug))
     .filter((article): article is Article => article !== undefined);
+}
+
+export function DuoPath({ current }: { current?: string }) {
+  const chapters = pickArticles(duoChapters);
+  return (
+    <ol className="mt-8 border-t border-line">
+      {chapters.map((article, index) => {
+        const here = article.slug === current;
+        return (
+          <li key={article.slug} className="border-b border-line">
+            <ArticleLink article={article} className="flex items-center gap-4 py-4">
+              <span className="w-8 shrink-0 font-sans text-xs tracking-widest text-oxide">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <img
+                src={coverSrc(article)}
+                alt=""
+                width={72}
+                height={72}
+                className="h-16 w-16 shrink-0 object-cover"
+              />
+              <span className="min-w-0">
+                <span className={`block font-serif text-xl leading-tight ${here ? "text-oxide" : "text-ink"}`}>
+                  {article.title}
+                </span>
+                <span className="mt-1 block line-clamp-2 font-sans text-sm text-muted">{article.dek}</span>
+              </span>
+            </ArticleLink>
+          </li>
+        );
+      })}
+    </ol>
+  );
 }

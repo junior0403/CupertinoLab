@@ -1,9 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ArticleLink, coverSrc } from "@/components/article-card";
 import { Shell } from "@/components/chrome";
 import { articles, type Article } from "@/content/articles";
 import { sections } from "@/content/taxonomy";
+
+const homeOrder = [
+  "otono-2026",
+  "precios-gama-iphone",
+  "iphone-18-pro-vs-max",
+  "ios-26",
+  "airpods-5",
+  "watch-2026",
+];
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -19,6 +28,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const slides = homeSlides();
   return (
     <Shell width="wide">
       <p className="pt-8 font-sans text-xs font-medium tracking-widest text-oxide uppercase">
@@ -28,12 +38,10 @@ function Home() {
         Elige una ficha.
       </h1>
       <p className="mt-3 max-w-md font-sans text-base leading-relaxed text-muted">
-        Cada cuadrado es un artículo. Se van turnando solos. Pulsa para abrirlo.
+        Desliza con el dedo. El iPhone Duo entra por una sola puerta.
       </p>
-
-      <ArticleCarousel items={articles} />
-
-      <nav className="mt-10 flex flex-wrap gap-2" aria-label="Secciones">
+      <ArticleShelf slides={slides} />
+      <nav className="mt-8 flex flex-wrap gap-2" aria-label="Secciones">
         {sections.map((section) => (
           <a
             key={section.slug}
@@ -48,95 +56,114 @@ function Home() {
   );
 }
 
-function ArticleCarousel({ items }: { items: Article[] }) {
-  const [index, setIndex] = useState(0);
-  const [per, setPer] = useState(1);
-  const [paused, setPaused] = useState(false);
-  const max = Math.max(1, items.length - per + 1);
+type Slide = {
+  key: string;
+  title: string;
+  image: string;
+  article?: Article;
+  href?: string;
+};
 
-  useEffect(() => {
-    const wide = window.matchMedia("(min-width: 768px)");
-    const apply = () => setPer(wide.matches ? 3 : 1);
-    apply();
-    wide.addEventListener("change", apply);
-    return () => wide.removeEventListener("change", apply);
-  }, []);
+function homeSlides(): Slide[] {
+  const bySlug = new Map(articles.map((article) => [article.slug, article]));
+  const slides: Slide[] = [];
+  const first = bySlug.get(homeOrder[0]);
+  if (first) slides.push(articleSlide(first));
+  slides.push({
+    key: "iphone-duo",
+    title: "iPhone Duo",
+    image: "/covers/duo.jpg",
+    href: "/iphone/iphone-duo",
+  });
+  for (const slug of homeOrder.slice(1)) {
+    const article = bySlug.get(slug);
+    if (article) slides.push(articleSlide(article));
+  }
+  return slides;
+}
 
-  useEffect(() => {
-    setIndex((current) => Math.min(current, Math.max(0, items.length - per)));
-  }, [per, items.length]);
-
-  useEffect(() => {
-    if (paused || items.length <= per) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const timer = window.setInterval(() => {
-      setIndex((current) => (current + 1) % max);
-    }, 7000);
-    return () => window.clearInterval(timer);
-  }, [paused, per, max, items.length]);
-
-  const step = (direction: number) => {
-    setIndex((current) => (current + direction + max) % max);
+function articleSlide(article: Article): Slide {
+  return {
+    key: article.slug,
+    title: article.title,
+    image: coverSrc(article),
+    article,
   };
+}
+
+function ArticleShelf({ slides }: { slides: Slide[] }) {
+  const scroller = useRef<HTMLDivElement>(null);
+  const cards = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const root = scroller.current;
+    if (!root) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let frame = 0;
+    const paint = () => {
+      const box = root.getBoundingClientRect();
+      const mid = box.left + box.width / 2;
+      for (const card of cards.current) {
+        if (!card) continue;
+        const rect = card.getBoundingClientRect();
+        const distance = Math.abs(rect.left + rect.width / 2 - mid);
+        const amount = Math.min(distance / (box.width * 0.62), 1);
+        if (reduce) {
+          card.style.filter = "";
+          card.style.transform = "";
+          card.style.opacity = "1";
+          continue;
+        }
+        card.style.transform = `scale(${1 - amount * 0.07})`;
+        card.style.filter = `blur(${amount * 12}px)`;
+        card.style.opacity = `${1 - amount * 0.35}`;
+      }
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(paint);
+    };
+    paint();
+    root.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      root.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [slides.length]);
 
   return (
     <section className="mt-8" aria-roledescription="carrusel" aria-label="Artículos">
-      <div
-        className="overflow-hidden"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-        onFocus={() => setPaused(true)}
-        onBlur={() => setPaused(false)}
-      >
+      <div className="-mx-5">
         <div
-          className="flex transition-transform duration-700 ease-out motion-reduce:transition-none"
-          style={{
-            width: `${(items.length / per) * 100}%`,
-            transform: `translateX(-${(index * 100) / items.length}%)`,
-          }}
+          ref={scroller}
+          className="flex snap-x snap-mandatory gap-5 overflow-x-auto px-[14vw] scroll-px-[14vw] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {items.map((article, position) => (
-            <div key={article.slug} className="px-2" style={{ width: `${100 / items.length}%` }}>
-              <SquareTile article={article} priority={position < 3} />
+          {slides.map((slide, position) => (
+            <div
+              key={slide.key}
+              ref={(node) => {
+                cards.current[position] = node;
+              }}
+              className="w-[72vw] max-w-sm shrink-0 snap-center sm:w-[46vw] md:w-[22rem]"
+            >
+              <ShelfCard slide={slide} priority={position < 2} />
             </div>
           ))}
         </div>
       </div>
-
-      <div className="mt-4 flex items-center justify-between gap-4 px-2">
-        <p className="font-sans text-xs tracking-widest text-muted uppercase">
-          {index + 1} de {max}
-        </p>
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={() => step(-1)}
-            className="h-11 border border-line bg-card px-4 font-sans text-sm text-ink"
-          >
-            Anterior
-          </button>
-          <button
-            type="button"
-            onClick={() => step(1)}
-            className="h-11 border border-ink bg-ink px-4 font-sans text-sm text-paper"
-          >
-            Siguiente
-          </button>
-        </div>
-      </div>
+      <p className="mt-4 font-sans text-xs tracking-widest text-muted uppercase">Desliza</p>
     </section>
   );
 }
 
-function SquareTile({ article, priority }: { article: Article; priority?: boolean }) {
-  return (
-    <ArticleLink
-      article={article}
-      className="group flex aspect-square flex-col border border-ink/15 bg-card shadow-[0_8px_24px_rgba(28,25,21,0.06)]"
-    >
-      <div className="relative min-h-0 flex-1 overflow-hidden bg-ink">
+function ShelfCard({ slide, priority }: { slide: Slide; priority?: boolean }) {
+  const face = (
+    <>
+      <span className="relative block min-h-0 flex-1 overflow-hidden bg-ink">
         <img
-          src={coverSrc(article)}
+          src={slide.image}
           alt=""
           width={800}
           height={800}
@@ -147,12 +174,26 @@ function SquareTile({ article, priority }: { article: Article; priority?: boolea
         <span className="absolute top-3 right-3 bg-paper px-2 py-1 font-sans text-[11px] font-medium tracking-widest text-oxide uppercase">
           Abrir
         </span>
-      </div>
+      </span>
       <span className="block border-t border-line px-3 py-3">
         <span className="line-clamp-3 block font-serif text-lg leading-tight text-ink group-hover:text-oxide">
-          {article.title}
+          {slide.title}
         </span>
       </span>
-    </ArticleLink>
+    </>
+  );
+  const className =
+    "group flex aspect-square flex-col border border-ink/15 bg-card will-change-transform";
+  if (slide.article) {
+    return (
+      <ArticleLink article={slide.article} className={className}>
+        {face}
+      </ArticleLink>
+    );
+  }
+  return (
+    <a href={slide.href} className={className}>
+      {face}
+    </a>
   );
 }

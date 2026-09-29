@@ -2,8 +2,9 @@ import { Link, notFound } from "@tanstack/react-router";
 import { ArticleCard, ArticleCover, ArticleLink, articleSectionName } from "@/components/article-card";
 import { RichText, Shell, SpecTable } from "@/components/chrome";
 import { articles, confidenceLabel, getArticle, type Article } from "@/content/articles";
-import { articlePath, sections, sectionsFor, type CategorySlug } from "@/content/taxonomy";
+import { articlePath, duoChapters, sections, sectionsFor, type CategorySlug } from "@/content/taxonomy";
 import { coverSrc } from "@/components/article-card";
+import { DuoPath } from "@/components/section-view";
 
 export function loadDeskArticle(slug: string, category: CategorySlug) {
   const article = getArticle(slug);
@@ -75,6 +76,8 @@ export function ArticleView({ article }: { article: Article }) {
     .map((slug) => articles.find((item) => item.slug === slug))
     .filter((item) => item !== undefined)
     .slice(0, 3);
+  const duoIndex = duoChapters.indexOf(article.slug as (typeof duoChapters)[number]);
+  const inDuo = duoIndex >= 0;
 
   return (
     <Shell>
@@ -94,6 +97,7 @@ export function ArticleView({ article }: { article: Article }) {
         </p>
         <p className="mt-4 font-sans text-xs font-medium tracking-widest text-oxide uppercase">
           {articleSectionName(article)}
+          {inDuo ? ` · ${String(duoIndex + 1).padStart(2, "0")} de ${duoChapters.length}` : ""}
         </p>
         <h1 className="mt-2 font-serif text-4xl leading-tight text-ink md:text-5xl">{article.title}</h1>
         <p className="mt-3 font-sans text-lg leading-relaxed text-muted">{article.dek}</p>
@@ -207,7 +211,15 @@ export function ArticleView({ article }: { article: Article }) {
           </p>
         </footer>
 
-        {related.length > 0 ? (
+        {inDuo ? (
+          <section className="mt-12">
+            <h2 className="font-serif text-2xl text-ink">El recorrido del Duo</h2>
+            <p className="mt-2 font-sans text-sm leading-relaxed text-muted">
+              Esta ficha es un paso. El resto sigue el mismo orden.
+            </p>
+            <DuoPath current={article.slug} />
+          </section>
+        ) : related.length > 0 ? (
           <section className="mt-12">
             <h2 className="font-serif text-2xl text-ink">También te puede interesar</h2>
             <ul className="mt-6 grid grid-cols-1 gap-8">

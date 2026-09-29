@@ -39,7 +39,7 @@ export const sections = [
     slug: "iphone-duo",
     name: "iPhone Duo",
     path: "/iphone/iphone-duo",
-    dek: "El primer plegable de Apple, explicado sin humo.",
+    dek: "Una entrada. Dentro, cada pregunta en su orden.",
   },
   {
     slug: "ios",
@@ -142,11 +142,17 @@ export function categoryBySlug(slug: string) {
 
 export const featuredSlug = "otono-2026";
 
-export const duoSpotlight = [
+export const duoChapters = [
   "precio-espana",
-  "iphone-duo-vs-iphone-18-pro-max",
+  "funciones-trucos",
+  "cuanto-dura-bateria",
+  "sim-fisica-esim",
   "pliegue-pantalla",
   "cuantas-veces-se-puede-doblar-iphone-duo",
+  "resistente-agua-ip68",
+  "que-pasa-si-se-cae",
+  "iphone-duo-vs-iphone-18-pro-max",
+  "iphone-duo-vs-galaxy-z-fold8",
 ] as const;
 
 export const legacyArticleHrefs: Record<string, string> = {
