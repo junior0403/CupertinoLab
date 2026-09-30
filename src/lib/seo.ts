@@ -38,9 +38,11 @@ export function pageMeta(input: { title: string; description: string; path: stri
       { property: "og:title", content: input.title },
       { property: "og:description", content: input.description },
       { property: "og:url", content: canonical },
-      { name: "twitter:card", content: "summary" },
+      { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: input.title },
       { name: "twitter:description", content: input.description },
+      { property: "og:image", content: `${origin}/og.jpg` },
+      { name: "twitter:image", content: `${origin}/og.jpg` },
     ],
     links: [{ rel: "canonical", href: canonical }],
   };
@@ -64,6 +66,12 @@ export function siteJsonLd() {
         "@type": "Organization",
         name: "CupertinoLab",
         url: `${origin}/`,
+        contactPoint: {
+          "@type": "ContactPoint",
+          email: "contacto@cupertinolab.space",
+          contactType: "editorial",
+          availableLanguage: "es",
+        },
       }),
     },
   ];

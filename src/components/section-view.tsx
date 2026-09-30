@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, notFound } from "@tanstack/react-router";
 import { ArticleCard, ArticleLink, coverSrc } from "@/components/article-card";
 import { Shell } from "@/components/chrome";
 import { articles, type Article } from "@/content/articles";
@@ -21,8 +21,9 @@ export function sectionMeta(slug: SectionSlug) {
 
 export function SectionView({ slug }: { slug: SectionSlug }) {
   const section = sectionBySlug(slug);
-  if (!section) return null;
+  if (!section) throw notFound();
   const items = articlesInSection(slug);
+  if (items.length === 0) throw notFound();
 
   return (
     <Shell width="wide">
@@ -41,11 +42,7 @@ export function SectionView({ slug }: { slug: SectionSlug }) {
           </a>
         </p>
       ) : null}
-      {items.length === 0 ? (
-        <p className="mt-8 border-t border-line pt-6 font-sans text-base text-muted">
-          Esta sección está abierta. Todavía no hay fichas.
-        </p>
-      ) : slug === "iphone-duo" ? (
+      {slug === "iphone-duo" ? (
         <DuoPath />
       ) : (
         <ul className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-3">

@@ -45,11 +45,11 @@ export function articleMeta(article: Article | undefined) {
     "@type": "Article",
     headline: article.title,
     description,
-    ...(modified ? { dateModified: modified } : {}),
+    ...(modified ? { datePublished: modified, dateModified: modified } : {}),
     inLanguage: "es",
     mainEntityOfPage: canonical,
     image,
-    author: { "@type": "Organization", name: "CupertinoLab", url: "https://cupertinolab.space/" },
+    author: { "@type": "Organization", name: "CupertinoLab", url: "https://cupertinolab.space/sobre" },
     publisher: { "@type": "Organization", name: "CupertinoLab", url: "https://cupertinolab.space/" },
   };
   return {
@@ -111,6 +111,10 @@ export function ArticleView({ article }: { article: Article }) {
         <h1 className="mt-2 font-serif text-4xl leading-tight text-ink md:text-5xl">{article.title}</h1>
         <p className="mt-3 font-sans text-lg leading-relaxed text-muted">{article.dek}</p>
         <p className="mt-4 font-sans text-xs tracking-wide text-muted uppercase">
+          <Link to="/sobre" className="underline underline-offset-4">
+            CupertinoLab
+          </Link>
+          <span aria-hidden="true"> · </span>
           {article.updated}
           <span aria-hidden="true"> · </span>
           {article.minutes} min de lectura

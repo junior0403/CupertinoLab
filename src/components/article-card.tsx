@@ -147,7 +147,7 @@ export function ArticleCover({
     <div className="relative aspect-[3/2] overflow-hidden bg-card">
       <img
         src={coverSrc(article)}
-        alt={article.coverAlt ?? ""}
+        alt={article.coverAlt || article.title}
         width={1400}
         height={900}
         loading={priority ? "eager" : "lazy"}

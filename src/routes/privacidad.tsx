@@ -19,7 +19,7 @@ function Privacidad() {
       <div className="mt-6 space-y-4 font-sans text-base leading-relaxed text-ink">
         <p>
           CupertinoLab es una publicación independiente. No pertenece a Apple y no vende sus
-          productos. Esta página dice qué datos toca el sitio hoy, 30 de septiembre de 2026.
+          productos. Esta página dice qué datos toca el sitio hoy, 1 de octubre de 2026.
         </p>
         <h2 className="pt-4 font-serif text-2xl">Qué no recogemos</h2>
         <p>No hay cuentas, ni boletín, ni formulario, ni píxel de publicidad, ni Google Analytics.</p>

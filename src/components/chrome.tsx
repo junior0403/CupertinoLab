@@ -13,6 +13,7 @@ const nav = [
   { href: "/iphone/iphone-duo", label: "Duo" },
   { href: "/mapa", label: "Mapa" },
   { href: "/editorial", label: "Método" },
+  { href: "/contacto", label: "Contacto" },
 ] as const;
 
 export function Shell({
@@ -210,6 +211,26 @@ export function SiteFooter() {
 export function ClusterMark({ cluster }: { cluster: Cluster }) {
   return (
     <span className="font-sans text-xs font-medium tracking-widest text-oxide uppercase">{clusters[cluster]}</span>
+  );
+}
+
+export function NotFoundPage() {
+  return (
+    <Shell>
+      <h1 className="pt-10 font-serif text-4xl text-ink">Esta página no está</h1>
+      <p className="mt-3 font-sans text-base leading-relaxed text-muted">
+        La dirección no corresponde a ninguna ficha ni sección.
+      </p>
+      <p className="mt-6 font-sans text-base">
+        <Link to="/" className="text-oxide underline underline-offset-4">
+          Volver al índice
+        </Link>
+        <span aria-hidden="true"> · </span>
+        <Link to="/mapa" className="text-ink underline underline-offset-4">
+          Mapa
+        </Link>
+      </p>
+    </Shell>
   );
 }
 
