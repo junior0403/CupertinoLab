@@ -3,6 +3,7 @@ import { ArticleCard, ArticleLink, coverSrc } from "@/components/article-card";
 import { Shell } from "@/components/chrome";
 import { articles, type Article } from "@/content/articles";
 import { duoChapters, sectionBySlug, sectionsFor, type SectionSlug } from "@/content/taxonomy";
+import { pageMeta } from "@/lib/seo";
 
 export function articlesInSection(slug: SectionSlug) {
   return articles.filter((article) => sectionsFor(article).includes(slug));
@@ -11,12 +12,11 @@ export function articlesInSection(slug: SectionSlug) {
 export function sectionMeta(slug: SectionSlug) {
   const section = sectionBySlug(slug);
   if (!section) return { meta: [] };
-  return {
-    meta: [
-      { title: `${section.name} · CupertinoLab` },
-      { name: "description", content: section.dek },
-    ],
-  };
+  return pageMeta({
+    title: `${section.name} · CupertinoLab`,
+    description: section.dek,
+    path: section.path,
+  });
 }
 
 export function SectionView({ slug }: { slug: SectionSlug }) {

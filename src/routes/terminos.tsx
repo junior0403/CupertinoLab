@@ -1,13 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Shell } from "@/components/chrome";
+import { pageMeta } from "@/lib/seo";
 
 export const Route = createFileRoute("/terminos")({
-  head: () => ({
-    meta: [
-      { title: "Términos · CupertinoLab" },
-      { name: "description", content: "Condiciones de uso de CupertinoLab." },
-    ],
-  }),
+  head: () =>
+    pageMeta({
+      title: "Términos · CupertinoLab",
+      description: "Condiciones de uso de CupertinoLab.",
+      path: "/terminos",
+    }),
   component: Terminos,
 });
 

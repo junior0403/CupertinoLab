@@ -1,16 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Shell } from "@/components/chrome";
+import { pageMeta } from "@/lib/seo";
 
 export const Route = createFileRoute("/cookies")({
-  head: () => ({
-    meta: [
-      { title: "Cookies · CupertinoLab" },
-      {
-        name: "description",
-        content: "Qué cookies usa CupertinoLab hoy y cuáles no se cargan.",
-      },
-    ],
-  }),
+  head: () =>
+    pageMeta({
+      title: "Cookies · CupertinoLab",
+      description: "Qué cookies usa CupertinoLab hoy y cuáles no se cargan.",
+      path: "/cookies",
+    }),
   component: Cookies,
 });
 

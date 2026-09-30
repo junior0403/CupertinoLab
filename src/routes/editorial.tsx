@@ -1,17 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Shell } from "@/components/chrome";
+import { pageMeta } from "@/lib/seo";
 
 export const Route = createFileRoute("/editorial")({
-  head: () => ({
-    meta: [
-      { title: "Método editorial · CupertinoLab" },
-      {
-        name: "description",
-        content:
-          "Cómo separa CupertinoLab la ficha de Apple, las manos de prensa y lo que todavía no se puede afirmar.",
-      },
-    ],
-  }),
+  head: () =>
+    pageMeta({
+      title: "Método editorial · CupertinoLab",
+      description:
+        "Cómo separa CupertinoLab la ficha de Apple, las manos de prensa y lo que todavía no se puede afirmar.",
+      path: "/editorial",
+    }),
   component: Editorial,
 });
 

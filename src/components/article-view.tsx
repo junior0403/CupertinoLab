@@ -5,6 +5,7 @@ import { articles, confidenceLabel, getArticle, type Article } from "@/content/a
 import { articlePath, duoChapters, sections, sectionsFor, type CategorySlug } from "@/content/taxonomy";
 import { coverSrc } from "@/components/article-card";
 import { DuoPath } from "@/components/section-view";
+import { isoFromUpdated } from "@/lib/seo";
 
 export function loadDeskArticle(slug: string, category: CategorySlug) {
   const article = getArticle(slug);
@@ -38,26 +39,34 @@ export function articleMeta(article: Article | undefined) {
       },
     ],
   };
+  const modified = isoFromUpdated(article.updated);
   const articleLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: article.title,
     description,
-    dateModified: "2026-09-30",
+    ...(modified ? { dateModified: modified } : {}),
     inLanguage: "es",
     mainEntityOfPage: canonical,
     image,
-    author: { "@type": "Organization", name: "CupertinoLab" },
-    publisher: { "@type": "Organization", name: "CupertinoLab" },
+    author: { "@type": "Organization", name: "CupertinoLab", url: "https://cupertinolab.space/" },
+    publisher: { "@type": "Organization", name: "CupertinoLab", url: "https://cupertinolab.space/" },
   };
   return {
     meta: [
       { title },
       { name: "description", content: description },
+      { property: "og:type", content: "article" },
+      { property: "og:site_name", content: "CupertinoLab" },
+      { property: "og:locale", content: "es_ES" },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:url", content: canonical },
       { property: "og:image", content: image },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: title },
+      { name: "twitter:description", content: description },
+      { name: "twitter:image", content: image },
     ],
     links: [{ rel: "canonical", href: canonical }],
     scripts: [

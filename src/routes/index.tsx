@@ -5,6 +5,7 @@ import { Shell } from "@/components/chrome";
 import { articles, type Article } from "@/content/articles";
 import { sections } from "@/content/taxonomy";
 import { articlesInSection } from "@/components/section-view";
+import { pageMeta, siteJsonLd } from "@/lib/seo";
 
 const homeOrder = [
   "otono-2026",
@@ -17,13 +18,12 @@ const homeOrder = [
 
 export const Route = createFileRoute("/")({
   head: () => ({
-    meta: [
-      { title: "CupertinoLab · El catálogo, sin el tráiler" },
-      {
-        name: "description",
-        content: "Noticias, guías, comparativas y pruebas sobre iPhone, iOS y el ecosistema Apple.",
-      },
-    ],
+    ...pageMeta({
+      title: "CupertinoLab · El catálogo, sin el tráiler",
+      description: "Noticias, guías, comparativas y pruebas sobre iPhone, iOS y el ecosistema Apple.",
+      path: "/",
+    }),
+    scripts: siteJsonLd(),
   }),
   component: Home,
 });

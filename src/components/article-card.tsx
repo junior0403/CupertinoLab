@@ -71,7 +71,6 @@ const coverLabel: Record<string, string> = {
   "cuantas-veces-se-puede-doblar": "Ciclos",
   "pliegue-en-la-pantalla": "Pliegue",
   "resistente-al-agua": "Agua",
-  "que-pasa-si-se-cae": "Caída",
   "cuanto-cuesta": "Precio",
   "vs-iphone-18-pro-max": "Contra el Max",
   "vs-galaxy-z-fold": "Contra el Fold",

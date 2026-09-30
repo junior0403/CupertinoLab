@@ -3,17 +3,16 @@ import { ArticleLink } from "@/components/article-card";
 import { Shell } from "@/components/chrome";
 import { articlesInSection } from "@/components/section-view";
 import { sections } from "@/content/taxonomy";
+import { pageMeta } from "@/lib/seo";
 
 export const Route = createFileRoute("/mapa")({
-  head: () => ({
-    meta: [
-      { title: "Mapa · CupertinoLab" },
-      {
-        name: "description",
-        content: "Índice de las fichas publicadas: iPhone, iPhone Duo, iOS, AirPods, Watch, comparativas y guías.",
-      },
-    ],
-  }),
+  head: () =>
+    pageMeta({
+      title: "Mapa · CupertinoLab",
+      description:
+        "Índice de las fichas publicadas: iPhone, iPhone Duo, iOS, AirPods, Watch, comparativas y guías.",
+      path: "/mapa",
+    }),
   component: Mapa,
 });
 

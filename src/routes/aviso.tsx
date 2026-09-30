@@ -1,17 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Shell } from "@/components/chrome";
+import { pageMeta } from "@/lib/seo";
 
 export const Route = createFileRoute("/aviso")({
-  head: () => ({
-    meta: [
-      { title: "Publicidad y afiliación · CupertinoLab" },
-      {
-        name: "description",
-        content:
-          "Cómo se marcan los anuncios y los futuros enlaces de afiliado en CupertinoLab.",
-      },
-    ],
-  }),
+  head: () =>
+    pageMeta({
+      title: "Publicidad y afiliación · CupertinoLab",
+      description: "Cómo se marcan los anuncios y los futuros enlaces de afiliado en CupertinoLab.",
+      path: "/aviso",
+    }),
   component: Aviso,
 });
 
