@@ -101,6 +101,12 @@ export const articles: Article[] = [
       },
     ],
     related: ["otono-2026", "precios-gama-iphone"],
+    sources: [
+      {
+        label: "Apple, iOS",
+        href: "https://www.apple.com/es/ios/",
+      },
+    ],
   },
   ...duoLote,
   ...lineup,

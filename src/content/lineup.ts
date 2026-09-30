@@ -2,6 +2,21 @@ import type { Article } from "@/content/articles";
 
 const updated = "29 sep 2026";
 
+const applePro = {
+  label: "Apple, especificaciones del iPhone 18 Pro",
+  href: "https://www.apple.com/es/iphone-18-pro/specs/",
+};
+const appleProNews = {
+  label: "Apple Newsroom, iPhone 18 Pro y Pro Max",
+  href: "https://www.apple.com/es/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/",
+};
+const appleDuo = {
+  label: "Apple Newsroom, presentación del iPhone Duo",
+  href: "https://www.apple.com/es/newsroom/2026/09/apple-unveils-iphone-duo/",
+};
+const appleAirPods = { label: "Apple, AirPods", href: "https://www.apple.com/es/airpods/" };
+const appleWatch = { label: "Apple, Apple Watch", href: "https://www.apple.com/es/apple-watch/" };
+
 export const lineup: Article[] = [
   {
     slug: "otono-2026",
@@ -68,6 +83,7 @@ export const lineup: Article[] = [
       },
     ],
     related: ["precios-gama-iphone", "airpods-5", "watch-2026"],
+    sources: [appleProNews, appleDuo, appleAirPods, appleWatch],
   },
   {
     slug: "precios-gama-iphone",
@@ -134,6 +150,7 @@ export const lineup: Article[] = [
       },
     ],
     related: ["iphone-18-pro-vs-max", "otono-2026", "iphone-duo-vs-iphone-18-pro-max"],
+    sources: [applePro, appleProNews, appleDuo],
   },
   {
     slug: "iphone-18-pro-vs-max",
@@ -198,6 +215,7 @@ export const lineup: Article[] = [
       },
     ],
     related: ["precios-gama-iphone", "otono-2026", "iphone-duo-vs-iphone-18-pro-max"],
+    sources: [applePro, appleProNews],
   },
   {
     slug: "airpods-5",
@@ -262,6 +280,7 @@ export const lineup: Article[] = [
       },
     ],
     related: ["otono-2026", "watch-2026", "precios-gama-iphone"],
+    sources: [appleAirPods, appleProNews],
   },
   {
     slug: "watch-2026",
@@ -324,5 +343,6 @@ export const lineup: Article[] = [
       },
     ],
     related: ["otono-2026", "airpods-5", "precios-gama-iphone"],
+    sources: [appleWatch, appleProNews],
   },
 ];

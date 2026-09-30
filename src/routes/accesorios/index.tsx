@@ -1,7 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { SectionView, sectionMeta } from "@/components/section-view";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/accesorios/")({
-  head: () => sectionMeta("accesorios"),
-  component: () => <SectionView slug="accesorios" />,
+  loader: () => {
+    throw redirect({ href: "/mapa", statusCode: 301 });
+  },
 });

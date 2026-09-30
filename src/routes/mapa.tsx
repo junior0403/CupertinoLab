@@ -10,7 +10,7 @@ export const Route = createFileRoute("/mapa")({
       { title: "Mapa · CupertinoLab" },
       {
         name: "description",
-        content: "Índice de iPhone, iPhone Duo, iOS, AirPods, Apple Watch, accesorios, comparativas y guías.",
+        content: "Índice de las fichas publicadas: iPhone, iPhone Duo, iOS, AirPods, Watch, comparativas y guías.",
       },
     ],
   }),
@@ -25,7 +25,9 @@ function Mapa() {
         Todas las fichas publicadas, agrupadas por sección. Una pieza nueva entra sola en su grupo.
       </p>
       <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-2">
-        {sections.map((section) => {
+        {sections
+          .filter((section) => articlesInSection(section.slug).length > 0)
+          .map((section) => {
           const items = articlesInSection(section.slug);
           return (
             <section key={section.slug} className="border-t border-line pt-4">
@@ -34,9 +36,7 @@ function Mapa() {
                   {section.name}
                 </a>
               </h2>
-              {items.length === 0 ? (
-                <p className="mt-3 font-sans text-sm text-muted">Todavía no hay fichas.</p>
-              ) : (
+              {items.length === 0 ? null : (
                 <ul className="mt-3 space-y-2">
                   {items.map((article) => (
                     <li key={article.slug}>

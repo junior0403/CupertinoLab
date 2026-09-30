@@ -4,6 +4,7 @@ import { ArticleLink, coverSrc } from "@/components/article-card";
 import { Shell } from "@/components/chrome";
 import { articles, type Article } from "@/content/articles";
 import { sections } from "@/content/taxonomy";
+import { articlesInSection } from "@/components/section-view";
 
 const homeOrder = [
   "otono-2026",
@@ -42,7 +43,9 @@ function Home() {
       </p>
       <ArticleShelf slides={slides} />
       <nav className="mt-8 flex flex-wrap gap-2" aria-label="Secciones">
-        {sections.map((section) => (
+        {sections
+          .filter((section) => articlesInSection(section.slug).length > 0)
+          .map((section) => (
           <a
             key={section.slug}
             href={section.path}

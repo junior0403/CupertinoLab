@@ -157,6 +157,7 @@ const footerInfo = [
   { href: "/contacto", label: "Contacto" },
   { href: "/privacidad", label: "Privacidad" },
   { href: "/cookies", label: "Cookies" },
+  { href: "/aviso", label: "Publicidad" },
   { href: "/terminos", label: "Términos" },
 ] as const;
 
