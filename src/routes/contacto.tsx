@@ -6,7 +6,7 @@ export const Route = createFileRoute("/contacto")({
   head: () =>
     pageMeta({
       title: "Contacto · CupertinoLab",
-      description: "CupertinoLab todavía no tiene un buzón público.",
+      description: "Escribe a la redacción de CupertinoLab en contacto@cupertinolab.space.",
       path: "/contacto",
     }),
   component: Contacto,
@@ -17,8 +17,11 @@ function Contacto() {
     <Shell>
       <h1 className="pt-8 font-serif text-4xl text-ink">Contacto</h1>
       <p className="mt-6 font-sans text-base leading-relaxed text-ink">
-        No hay buzón ni formulario. No pedimos datos. Cuando exista una dirección de redacción, se
-        publicará aquí y no en un anuncio.
+        La redacción lee{" "}
+        <a className="underline underline-offset-4" href="mailto:contacto@cupertinolab.space">
+          contacto@cupertinolab.space
+        </a>
+        . No hay formulario y no pedimos datos para escribir.
       </p>
     </Shell>
   );

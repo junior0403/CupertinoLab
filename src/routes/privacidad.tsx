@@ -56,11 +56,11 @@ function Privacidad() {
         </p>
         <h2 className="pt-4 font-serif text-2xl">Contacto</h2>
         <p>
-          Para una pregunta sobre estos datos, la vía es la página de{" "}
-          <Link to="/contacto" className="underline underline-offset-4">
-            contacto
-          </Link>
-          . Todavía no hay un buzón publicado: no vamos a poner una dirección que no reciba correo.
+          Para una pregunta sobre estos datos, escribe a{" "}
+          <a className="underline underline-offset-4" href="mailto:contacto@cupertinolab.space">
+            contacto@cupertinolab.space
+          </a>
+          . Esa dirección reenvía a la redacción. No publicamos el buzón personal.
         </p>
       </div>
     </Shell>
