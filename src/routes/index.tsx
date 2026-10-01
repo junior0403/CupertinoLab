@@ -163,6 +163,7 @@ function ArticleShelf({ slides }: { slides: Slide[] }) {
       frame = requestAnimationFrame(paint);
     };
 
+    let tracking = false;
     let dragging = false;
     let startX = 0;
     let startScroll = 0;
@@ -170,20 +171,28 @@ function ArticleShelf({ slides }: { slides: Slide[] }) {
 
     const onPointerDown = (event: PointerEvent) => {
       if (event.pointerType === "touch" || event.button !== 0) return;
-      dragging = true;
+      tracking = true;
+      dragging = false;
       moved = 0;
       startX = event.clientX;
       startScroll = root.scrollLeft;
-      root.style.scrollSnapType = "none";
-      root.setPointerCapture(event.pointerId);
     };
     const onPointerMove = (event: PointerEvent) => {
-      if (!dragging) return;
+      if (!tracking) return;
       const dx = event.clientX - startX;
-      moved = Math.max(moved, Math.abs(dx));
+      if (!dragging) {
+        if (Math.abs(dx) < 8) return;
+        dragging = true;
+        moved = Math.abs(dx);
+        root.style.scrollSnapType = "none";
+        root.setPointerCapture(event.pointerId);
+      }
+      moved = Math.abs(dx);
       root.scrollLeft = startScroll - dx;
     };
     const endDrag = () => {
+      if (!tracking) return;
+      tracking = false;
       if (!dragging) return;
       dragging = false;
       root.style.scrollSnapType = "";
@@ -239,7 +248,7 @@ function ArticleShelf({ slides }: { slides: Slide[] }) {
     <section className="relative mt-8" aria-roledescription="carrusel" aria-label="Artículos">
       <div
         ref={scroller}
-        className="flex cursor-grab snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] md:scroll-px-0 md:px-0 [&::-webkit-scrollbar]:hidden"
+        className="flex cursor-grab snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] md:scroll-px-14 md:px-14 [&::-webkit-scrollbar]:hidden"
       >
         {slides.map((slide, position) => (
           <div
@@ -277,8 +286,8 @@ function ShelfButton({
       aria-label={label}
       disabled={disabled}
       onClick={onClick}
-      className={`absolute top-[34%] hidden h-11 w-11 items-center justify-center border border-line bg-paper text-ink disabled:opacity-30 md:flex ${
-        side === "left" ? "-left-2" : "-right-2"
+      className={`absolute top-[28%] hidden h-11 w-11 items-center justify-center border border-line bg-paper text-ink disabled:opacity-30 md:flex ${
+        side === "left" ? "left-0" : "right-0"
       }`}
     >
       <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
