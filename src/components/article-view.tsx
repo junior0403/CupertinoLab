@@ -5,7 +5,7 @@ import { articles, confidenceLabel, getArticle, type Article } from "@/content/a
 import { articlePath, duoChapters, sections, sectionsFor, type CategorySlug } from "@/content/taxonomy";
 import { coverSrc } from "@/components/article-card";
 import { DuoPath } from "@/components/section-view";
-import { isoFromUpdated } from "@/lib/seo";
+import { breadcrumbLd, isoFromUpdated, plainText } from "@/lib/seo";
 
 export function loadDeskArticle(slug: string, category: CategorySlug) {
   const article = getArticle(slug);
@@ -16,29 +16,19 @@ export function loadDeskArticle(slug: string, category: CategorySlug) {
 export function articleMeta(article: Article | undefined) {
   if (!article) return { meta: [] };
   const title = article.metaTitle ?? `${article.title} · CupertinoLab`;
-  const description = article.metaDescription ?? article.dek;
+  const description = plainText(article.metaDescription ?? article.dek);
   const path = articlePath(article);
   const canonical = `https://cupertinolab.space${path}`;
   const image = `https://cupertinolab.space${coverSrc(article)}`;
+  const imageAlt = article.coverAlt || article.title;
   const section = sectionsFor(article)
     .map((slug) => sections.find((item) => item.slug === slug))
     .find((item) => item !== undefined);
-  const breadcrumb = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Inicio", item: "https://cupertinolab.space/" },
-      ...(section
-        ? [{ "@type": "ListItem", position: 2, name: section.name, item: `https://cupertinolab.space${section.path}` }]
-        : []),
-      {
-        "@type": "ListItem",
-        position: section ? 3 : 2,
-        name: article.title,
-        item: canonical,
-      },
-    ],
-  };
+  const breadcrumb = breadcrumbLd([
+    { name: "Inicio", path: "/" },
+    ...(section ? [{ name: section.name, path: section.path }] : []),
+    { name: article.title, path },
+  ]);
   const modified = isoFromUpdated(article.updated);
   const articleLd = {
     "@context": "https://schema.org",
@@ -47,11 +37,33 @@ export function articleMeta(article: Article | undefined) {
     description,
     ...(modified ? { datePublished: modified, dateModified: modified } : {}),
     inLanguage: "es",
-    mainEntityOfPage: canonical,
-    image,
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
+    image: { "@type": "ImageObject", url: image },
     author: { "@type": "Organization", name: "CupertinoLab", url: "https://cupertinolab.space/sobre" },
-    publisher: { "@type": "Organization", name: "CupertinoLab", url: "https://cupertinolab.space/" },
+    publisher: {
+      "@type": "Organization",
+      name: "CupertinoLab",
+      url: "https://cupertinolab.space/",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://cupertinolab.space/og.jpg",
+        width: 1200,
+        height: 630,
+      },
+    },
   };
+  const faqLd =
+    article.faq.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: article.faq.map((item) => ({
+            "@type": "Question",
+            name: plainText(item.q),
+            acceptedAnswer: { "@type": "Answer", text: plainText(item.a) },
+          })),
+        }
+      : undefined;
   return {
     meta: [
       { title },
@@ -63,15 +75,28 @@ export function articleMeta(article: Article | undefined) {
       { property: "og:description", content: description },
       { property: "og:url", content: canonical },
       { property: "og:image", content: image },
+      { property: "og:image:alt", content: imageAlt },
+      ...(modified
+        ? [
+            { property: "article:published_time", content: modified },
+            { property: "article:modified_time", content: modified },
+          ]
+        : []),
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: title },
       { name: "twitter:description", content: description },
       { name: "twitter:image", content: image },
+      { name: "twitter:image:alt", content: imageAlt },
     ],
-    links: [{ rel: "canonical", href: canonical }],
+    links: [
+      { rel: "canonical", href: canonical },
+      { rel: "alternate", hrefLang: "es", href: canonical },
+      { rel: "preload", as: "image", href: coverSrc(article) },
+    ],
     scripts: [
       { type: "application/ld+json", children: JSON.stringify(breadcrumb) },
       { type: "application/ld+json", children: JSON.stringify(articleLd) },
+      ...(faqLd ? [{ type: "application/ld+json", children: JSON.stringify(faqLd) }] : []),
     ],
   };
 }

@@ -26,8 +26,12 @@ export function isoFromUpdated(updated: string) {
   return `${match[3]}-${month}-${match[1].padStart(2, "0")}`;
 }
 
+export function plainText(text: string) {
+  return text.replace(/\[\[([^|\]]+)\|([^\]]+)\]\]/g, "$2");
+}
+
 export function pageMeta(input: { title: string; description: string; path: string }) {
-  const canonical = `${origin}${input.path}`;
+  const canonical = `${origin}${input.path === "/" ? "/" : input.path}`;
   return {
     meta: [
       { title: input.title },
@@ -38,13 +42,32 @@ export function pageMeta(input: { title: string; description: string; path: stri
       { property: "og:title", content: input.title },
       { property: "og:description", content: input.description },
       { property: "og:url", content: canonical },
+      { property: "og:image", content: `${origin}/og.jpg` },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "CupertinoLab" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: input.title },
       { name: "twitter:description", content: input.description },
-      { property: "og:image", content: `${origin}/og.jpg` },
       { name: "twitter:image", content: `${origin}/og.jpg` },
     ],
-    links: [{ rel: "canonical", href: canonical }],
+    links: [
+      { rel: "canonical", href: canonical },
+      { rel: "alternate", hrefLang: "es", href: canonical },
+    ],
+  };
+}
+
+export function breadcrumbLd(items: { name: string; path: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: `${origin}${item.path === "/" ? "/" : item.path}`,
+    })),
   };
 }
 
@@ -66,6 +89,12 @@ export function siteJsonLd() {
         "@type": "Organization",
         name: "CupertinoLab",
         url: `${origin}/`,
+        logo: {
+          "@type": "ImageObject",
+          url: `${origin}/og.jpg`,
+          width: 1200,
+          height: 630,
+        },
         contactPoint: {
           "@type": "ContactPoint",
           email: "contacto@cupertinolab.space",

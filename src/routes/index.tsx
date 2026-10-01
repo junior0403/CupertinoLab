@@ -3,9 +3,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArticleLink, coverSrc } from "@/components/article-card";
 import { Shell } from "@/components/chrome";
 import { articles, type Article } from "@/content/articles";
-import { sections } from "@/content/taxonomy";
+import { articlePath, sections } from "@/content/taxonomy";
 import { articlesInSection } from "@/components/section-view";
-import { pageMeta, siteJsonLd } from "@/lib/seo";
+import { breadcrumbLd, pageMeta, siteJsonLd } from "@/lib/seo";
 
 const homeOrder = [
   "otono-2026",
@@ -20,13 +20,43 @@ export const Route = createFileRoute("/")({
   head: () => ({
     ...pageMeta({
       title: "CupertinoLab · El catálogo, sin el tráiler",
-      description: "Noticias, guías, comparativas y pruebas sobre iPhone, iOS y el ecosistema Apple.",
+      description:
+        "Fichas de iPhone 18, iPhone Duo, iOS 26, AirPods y Apple Watch. La cifra de Apple, separada de lo que todavía no está medido.",
       path: "/",
     }),
-    scripts: siteJsonLd(),
+    scripts: [
+      ...siteJsonLd(),
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(breadcrumbLd([{ name: "Inicio", path: "/" }])),
+      },
+      { type: "application/ld+json", children: JSON.stringify(homeListLd()) },
+    ],
   }),
   component: Home,
 });
+
+function homeListLd() {
+  const bySlug = new Map(articles.map((article) => [article.slug, article]));
+  const items: { name: string; path: string }[] = [];
+  const first = bySlug.get(homeOrder[0]);
+  if (first) items.push({ name: first.title, path: articlePath(first) });
+  items.push({ name: "iPhone Duo", path: "/iphone/iphone-duo" });
+  for (const slug of homeOrder.slice(1)) {
+    const article = bySlug.get(slug);
+    if (article) items.push({ name: article.title, path: articlePath(article) });
+  }
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      url: `https://cupertinolab.space${item.path}`,
+    })),
+  };
+}
 
 function Home() {
   const slides = homeSlides();

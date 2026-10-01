@@ -13,7 +13,7 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "Noticias, guías, comparativas y pruebas sobre iPhone, iOS y el ecosistema Apple.",
+          "Fichas de iPhone 18, iPhone Duo, iOS 26, AirPods y Apple Watch. La cifra de Apple, separada de lo que todavía no está medido.",
       },
       { name: "theme-color", content: "#f3efe6" },
     ],
