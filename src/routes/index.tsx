@@ -95,6 +95,7 @@ type Slide = {
   image: string;
   article?: Article;
   href?: string;
+  crop?: string;
 };
 
 function homeSlides(): Slide[] {
@@ -107,6 +108,7 @@ function homeSlides(): Slide[] {
     title: "iPhone Duo",
     image: "/covers/duo.jpg",
     href: "/iphone/iphone-duo",
+    crop: "scale-[1.85]",
   });
   for (const slug of homeOrder.slice(1)) {
     const article = bySlug.get(slug);
@@ -140,51 +142,104 @@ function ArticleShelf({ slides }: { slides: Slide[] }) {
         if (!card) continue;
         const rect = card.getBoundingClientRect();
         const distance = Math.abs(rect.left + rect.width / 2 - mid);
-        const amount = Math.min(distance / (box.width * 0.62), 1);
+        const amount = Math.min(distance / (box.width * 0.55), 1);
         if (reduce) {
           card.style.filter = "";
           card.style.transform = "";
           card.style.opacity = "1";
           continue;
         }
-        card.style.transform = `scale(${1 - amount * 0.07})`;
-        card.style.filter = `blur(${amount * 12}px)`;
-        card.style.opacity = `${1 - amount * 0.35}`;
+        card.style.transform = `scale(${1 - amount * 0.05})`;
+        card.style.filter = `blur(${amount * 8}px)`;
+        card.style.opacity = `${1 - amount * 0.28}`;
       }
     };
     const onScroll = () => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(paint);
     };
+
+    let dragging = false;
+    let startX = 0;
+    let startScroll = 0;
+    let moved = 0;
+
+    const onPointerDown = (event: PointerEvent) => {
+      if (event.pointerType === "touch" || event.button !== 0) return;
+      dragging = true;
+      moved = 0;
+      startX = event.clientX;
+      startScroll = root.scrollLeft;
+      root.style.scrollSnapType = "none";
+      root.setPointerCapture(event.pointerId);
+    };
+    const onPointerMove = (event: PointerEvent) => {
+      if (!dragging) return;
+      const dx = event.clientX - startX;
+      moved = Math.max(moved, Math.abs(dx));
+      root.scrollLeft = startScroll - dx;
+    };
+    const endDrag = () => {
+      if (!dragging) return;
+      dragging = false;
+      root.style.scrollSnapType = "";
+    };
+    const onClickCapture = (event: MouseEvent) => {
+      if (moved < 8) return;
+      event.preventDefault();
+      event.stopPropagation();
+      moved = 0;
+    };
+    const onWheel = (event: WheelEvent) => {
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      const max = root.scrollWidth - root.clientWidth;
+      const next = root.scrollLeft + event.deltaY;
+      if ((event.deltaY < 0 && root.scrollLeft <= 0) || (event.deltaY > 0 && root.scrollLeft >= max - 1)) {
+        return;
+      }
+      root.scrollLeft = Math.min(max, Math.max(0, next));
+      event.preventDefault();
+    };
+
     paint();
     root.addEventListener("scroll", onScroll, { passive: true });
+    root.addEventListener("pointerdown", onPointerDown);
+    root.addEventListener("pointermove", onPointerMove);
+    root.addEventListener("pointerup", endDrag);
+    root.addEventListener("pointercancel", endDrag);
+    root.addEventListener("click", onClickCapture, true);
+    root.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("resize", onScroll);
     return () => {
       cancelAnimationFrame(frame);
       root.removeEventListener("scroll", onScroll);
+      root.removeEventListener("pointerdown", onPointerDown);
+      root.removeEventListener("pointermove", onPointerMove);
+      root.removeEventListener("pointerup", endDrag);
+      root.removeEventListener("pointercancel", endDrag);
+      root.removeEventListener("click", onClickCapture, true);
+      root.removeEventListener("wheel", onWheel);
       window.removeEventListener("resize", onScroll);
     };
   }, [slides.length]);
 
   return (
     <section className="mt-8" aria-roledescription="carrusel" aria-label="Artículos">
-      <div className="-mx-5">
-        <div
-          ref={scroller}
-          className="flex snap-x snap-mandatory gap-5 overflow-x-auto px-[14vw] scroll-px-[14vw] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        >
-          {slides.map((slide, position) => (
-            <div
-              key={slide.key}
-              ref={(node) => {
-                cards.current[position] = node;
-              }}
-              className="w-[72vw] max-w-sm shrink-0 snap-center sm:w-[46vw] md:w-[22rem]"
-            >
-              <ShelfCard slide={slide} priority={position < 2} />
-            </div>
-          ))}
-        </div>
+      <div
+        ref={scroller}
+        className="flex cursor-grab snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] md:scroll-px-0 md:px-0 [&::-webkit-scrollbar]:hidden"
+      >
+        {slides.map((slide, position) => (
+          <div
+            key={slide.key}
+            ref={(node) => {
+              cards.current[position] = node;
+            }}
+            className="w-[78%] shrink-0 snap-center sm:w-[46%] md:w-[calc((100%-2rem)/3)]"
+          >
+            <ShelfCard slide={slide} priority={position < 2} />
+          </div>
+        ))}
       </div>
       <p className="mt-4 font-sans text-xs tracking-widest text-muted uppercase">Desliza</p>
     </section>
@@ -194,29 +249,28 @@ function ArticleShelf({ slides }: { slides: Slide[] }) {
 function ShelfCard({ slide, priority }: { slide: Slide; priority?: boolean }) {
   const face = (
     <>
-      <span className="relative block min-h-0 flex-1 overflow-hidden bg-ink">
+      <span className="relative block aspect-[4/3] overflow-hidden bg-ink">
         <img
           src={slide.image}
           alt=""
           width={800}
-          height={800}
+          height={600}
           loading={priority ? "eager" : "lazy"}
           decoding="async"
-          className="absolute inset-0 h-full w-full object-cover"
+          className={`absolute inset-0 h-full w-full object-cover ${slide.crop ?? ""}`}
         />
         <span className="absolute top-3 right-3 bg-paper px-2 py-1 font-sans text-[11px] font-medium tracking-widest text-oxide uppercase">
           Abrir
         </span>
       </span>
       <span className="block border-t border-line px-3 py-3">
-        <span className="line-clamp-3 block font-serif text-lg leading-tight text-ink group-hover:text-oxide">
+        <span className="line-clamp-2 block min-h-[3.25rem] font-serif text-lg leading-tight text-ink group-hover:text-oxide">
           {slide.title}
         </span>
       </span>
     </>
   );
-  const className =
-    "group flex aspect-square flex-col border border-ink/15 bg-card will-change-transform";
+  const className = "group flex flex-col border border-ink/15 bg-card will-change-transform";
   if (slide.article) {
     return (
       <ArticleLink article={slide.article} className={className}>
