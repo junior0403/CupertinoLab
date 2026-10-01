@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ArticleLink, coverSrc } from "@/components/article-card";
 import { Shell } from "@/components/chrome";
@@ -129,6 +129,7 @@ function articleSlide(article: Article): Slide {
 function ArticleShelf({ slides }: { slides: Slide[] }) {
   const scroller = useRef<HTMLDivElement>(null);
   const cards = useRef<(HTMLDivElement | null)[]>([]);
+  const [edges, setEdges] = useState({ start: true, end: false });
 
   useEffect(() => {
     const root = scroller.current;
@@ -153,6 +154,9 @@ function ArticleShelf({ slides }: { slides: Slide[] }) {
         card.style.filter = `blur(${amount * 8}px)`;
         card.style.opacity = `${1 - amount * 0.28}`;
       }
+      const start = root.scrollLeft <= 1;
+      const end = root.scrollLeft >= root.scrollWidth - root.clientWidth - 1;
+      setEdges((prev) => (prev.start === start && prev.end === end ? prev : { start, end }));
     };
     const onScroll = () => {
       cancelAnimationFrame(frame);
@@ -223,8 +227,16 @@ function ArticleShelf({ slides }: { slides: Slide[] }) {
     };
   }, [slides.length]);
 
+  const step = (direction: -1 | 1) => {
+    const root = scroller.current;
+    const card = cards.current.find((node) => node);
+    if (!root || !card) return;
+    const gap = 16;
+    root.scrollBy({ left: direction * (card.getBoundingClientRect().width + gap), behavior: "smooth" });
+  };
+
   return (
-    <section className="mt-8" aria-roledescription="carrusel" aria-label="Artículos">
+    <section className="relative mt-8" aria-roledescription="carrusel" aria-label="Artículos">
       <div
         ref={scroller}
         className="flex cursor-grab snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] md:scroll-px-0 md:px-0 [&::-webkit-scrollbar]:hidden"
@@ -241,8 +253,38 @@ function ArticleShelf({ slides }: { slides: Slide[] }) {
           </div>
         ))}
       </div>
-      <p className="mt-4 font-sans text-xs tracking-widest text-muted uppercase">Desliza</p>
+      <ShelfButton label="Ficha anterior" disabled={edges.start} onClick={() => step(-1)} side="left" />
+      <ShelfButton label="Ficha siguiente" disabled={edges.end} onClick={() => step(1)} side="right" />
+      <p className="mt-4 font-sans text-xs tracking-widest text-muted uppercase md:hidden">Desliza</p>
     </section>
+  );
+}
+
+function ShelfButton({
+  label,
+  disabled,
+  onClick,
+  side,
+}: {
+  label: string;
+  disabled: boolean;
+  onClick: () => void;
+  side: "left" | "right";
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      disabled={disabled}
+      onClick={onClick}
+      className={`absolute top-[34%] hidden h-11 w-11 items-center justify-center border border-line bg-paper text-ink disabled:opacity-30 md:flex ${
+        side === "left" ? "-left-2" : "-right-2"
+      }`}
+    >
+      <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
+        {side === "left" ? <path d="M14 6l-6 6 6 6" /> : <path d="M10 6l6 6-6 6" />}
+      </svg>
+    </button>
   );
 }
 
