@@ -27,9 +27,17 @@ function Cookies() {
         <p>No hay. No está instalado Google Analytics ni ningún medidor equivalente.</p>
         <h2 className="pt-4 font-serif text-2xl">De publicidad</h2>
         <p>
-          No hay. No se carga AdSense ni ninguna cookie de terceros para anuncios. Si eso cambia, esta
-          página lo dirá antes, con el nombre del proveedor y la forma de rechazarlo, y no se
-          activará a escondidas. El detalle de cómo se marcaría un anuncio está en{" "}
+          Se carga el script de Google AdSense (pagead2.googlesyndication.com) para verificar el sitio.
+          Puede dejar una cookie de publicidad de Google. No hay bloques de anuncio en la página. Se
+          rechaza en{" "}
+          <a
+            className="underline underline-offset-4"
+            href="https://adssettings.google.com"
+            rel="noreferrer"
+          >
+            la configuración de anuncios de Google
+          </a>
+          . El detalle de cómo se marcaría un anuncio está en{" "}
           <Link to="/aviso" className="underline underline-offset-4">
             publicidad
           </Link>

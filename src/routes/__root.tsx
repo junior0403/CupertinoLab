@@ -29,6 +29,13 @@ export const Route = createRootRoute({
         href: "https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,480&family=Outfit:wght@400;500;600&display=swap",
       },
     ],
+    scripts: [
+      {
+        async: true,
+        src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2400376798690530",
+        crossOrigin: "anonymous",
+      },
+    ],
   }),
   notFoundComponent: NotFoundPage,
   component: () => (

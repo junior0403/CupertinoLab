@@ -19,7 +19,7 @@ function Privacidad() {
       <div className="mt-6 space-y-4 font-sans text-base leading-relaxed text-ink">
         <p>
           CupertinoLab es una publicación independiente. No pertenece a Apple y no vende sus
-          productos. Esta página dice qué datos toca el sitio hoy, 1 de octubre de 2026.
+          productos. Esta página dice qué datos toca el sitio hoy, 5 de octubre de 2026.
         </p>
         <h2 className="pt-4 font-serif text-2xl">Qué no recogemos</h2>
         <p>No hay cuentas, ni boletín, ni formulario, ni píxel de publicidad, ni Google Analytics.</p>
@@ -42,13 +42,17 @@ function Privacidad() {
         </p>
         <h2 className="pt-4 font-serif text-2xl">Publicidad</h2>
         <p>
-          Hoy no hay anuncios. Si más adelante se pide AdSense, no se cargará ningún anuncio hasta
-          actualizar esta página y la de{" "}
-          <Link to="/cookies" className="underline underline-offset-4">
-            cookies
-          </Link>{" "}
-          con el nombre del servicio, para qué usa la cookie y cómo rechazarla. El criterio editorial
-          está en{" "}
+          El sitio carga el script de Google AdSense para que Google compruebe que la página es nuestra.
+          Todavía no hay bloques de anuncio. Ese script puede guardar una cookie de Google. Se rechaza
+          en{" "}
+          <a
+            className="underline underline-offset-4"
+            href="https://adssettings.google.com"
+            rel="noreferrer"
+          >
+            la configuración de anuncios de Google
+          </a>
+          . El criterio editorial está en{" "}
           <Link to="/aviso" className="underline underline-offset-4">
             publicidad
           </Link>

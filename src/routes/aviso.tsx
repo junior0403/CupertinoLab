@@ -18,9 +18,9 @@ function Aviso() {
       <h1 className="pt-8 font-serif text-4xl text-ink">Publicidad y afiliación</h1>
       <div className="mt-6 space-y-4 font-sans text-base leading-relaxed text-ink">
         <p>
-          Hoy no hay anuncios en la página. El hueco existe en la plantilla, oculto, para poder
-          marcarlos más adelante en el cuerpo del texto y nunca pegados a un botón. No hay anuncio
-          fijo en la parte baja de la pantalla.
+          El script de AdSense está en la página para que Google verifique el sitio. No hay bloques de
+          anuncio visibles, ni uno fijo en la parte baja. Cuando los haya, irán en el cuerpo del texto
+          y nunca pegados a un botón.
         </p>
         <p>
           Hoy no hay enlaces de compra. Cuando existan —funda, o el teléfono el
