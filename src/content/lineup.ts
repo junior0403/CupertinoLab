@@ -115,7 +115,7 @@ export const lineup: Article[] = [
         heading: "Los que ya puedes pagar",
         paragraphs: [
           "18 Pro y Pro Max abrieron preventa el 12 de septiembre y llegaron a tienda el 18. El salto de almacenamiento del Pro es 1.399 (512 GB), 1.799 (1 TB) y 2.399 (2 TB). En el Max: 1.499, 1.899 y 2.499. Son listas de EE. UU. sin impuesto. Tu país no se calcula multiplicando.",
-          "El 17 Pro y el 17 Pro Max ya no están. Quien compare con el precio del año pasado tiene que usar el 17 normal o el Air, no un Pro descatalogado.",
+          "El 17 Pro y el 17 Pro Max ya no están. Quien compare con el precio del año pasado tiene que usar el 17 normal o el Air, no un Pro descatalogado. Si el 17 Pro ya es tuyo, la duda de cambiar está en [[iphone-18-pro-vs-iphone-17-pro|esta comparativa]], no en una rebaja que Apple no publica.",
         ],
       },
       {
@@ -193,7 +193,7 @@ export const lineup: Article[] = [
       {
         heading: "Cuándo no comprar ninguno",
         paragraphs: [
-          "Si vienes de un 17 Pro y solo quieres el chip nuevo, espera a ver pruebas de la apertura variable en tus escenas, no en el escenario. Si el presupuesto se queda en cuatro cifras justas, el [[precios-gama-iphone|iPhone Air y el 17]] siguen a la venta y no arrastran un plegable.",
+          "Si vienes de un 17 Pro y solo quieres el chip nuevo, espera a ver pruebas de la apertura variable en tus escenas, no en el escenario. La pregunta de si merece la pena dejar el 17 está en [[iphone-18-pro-vs-iphone-17-pro|18 Pro contra 17 Pro]]. Si el presupuesto se queda en cuatro cifras justas, el [[precios-gama-iphone|iPhone Air y el 17]] siguen a la venta y no arrastran un plegable.",
           "Los AirPods no vienen en la caja. Si los vas a cambiar, míralos aparte: el salto de este año está en los [[airpods-5|AirPods 5]], no en el teléfono.",
         ],
       },

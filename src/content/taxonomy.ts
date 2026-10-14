@@ -83,6 +83,7 @@ export type SectionSlug = (typeof sections)[number]["slug"];
 
 const comparativas = new Set([
   "iphone-18-pro-vs-max",
+  "iphone-18-pro-vs-iphone-17-pro",
   "iphone-duo-vs-iphone-18-pro-max",
   "iphone-duo-vs-galaxy-z-fold8",
 ]);

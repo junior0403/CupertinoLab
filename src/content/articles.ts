@@ -1,6 +1,7 @@
 import type { CategorySlug, Cluster } from "@/content/taxonomy";
 import { duoLote } from "@/content/duo-lote";
 import { lineup } from "@/content/lineup";
+import { proVs17 } from "@/content/pro-vs-17";
 
 export type Article = {
   slug: string;
@@ -13,7 +14,12 @@ export type Article = {
   minutes: number;
   updated: string;
   confidence: "ficha" | "manos" | "pendiente";
-  sections: { heading: string; paragraphs: string[]; subsections?: { heading: string; paragraphs: string[] }[] }[];
+  sections: {
+    heading: string;
+    paragraphs: string[];
+    subsections?: { heading: string; paragraphs: string[] }[];
+    table?: { caption: string; headers: string[]; rows: string[][] };
+  }[];
   unknowns: string[];
   decision: string;
   faq: { q: string; a: string }[];
@@ -110,6 +116,7 @@ export const articles: Article[] = [
   },
   ...duoLote,
   ...lineup,
+  ...proVs17,
 ];
 
 const bySlug = new Map(articles.map((article) => [article.slug, article]));

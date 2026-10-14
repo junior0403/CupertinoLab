@@ -67,6 +67,7 @@ const coverLabel: Record<string, string> = {
   "otono-2026": "Otoño",
   "precios-gama-iphone": "Precios",
   "iphone-18-pro-vs-max": "Pro o Max",
+  "iphone-18-pro-vs-iphone-17-pro": "18 o 17",
   "guia-completa": "Guía",
   "cuantas-veces-se-puede-doblar": "Ciclos",
   "pliegue-en-la-pantalla": "Pliegue",
@@ -105,7 +106,7 @@ export function coverSrc(article: Pick<Article, "slug" | "category">) {
   if (article.slug === "ios-26") return "/covers/ios.jpg";
   if (article.slug === "otono-2026") return "/covers/iphone-glacier.jpg";
   if (article.slug === "precios-gama-iphone") return "/covers/iphone.jpg";
-  if (article.slug === "iphone-18-pro-vs-max") {
+  if (article.slug === "iphone-18-pro-vs-max" || article.slug === "iphone-18-pro-vs-iphone-17-pro") {
     return "/covers/compare.jpg";
   }
   if (article.slug === "apple-pencil") return "/covers/pencil.jpg";

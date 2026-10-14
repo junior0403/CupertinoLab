@@ -175,6 +175,13 @@ export function ArticleView({ article }: { article: Article }) {
                 ))}
               </div>
             ))}
+            {section.table ? (
+              <SpecTable
+                caption={section.table.caption}
+                headers={section.table.headers}
+                rows={section.table.rows}
+              />
+            ) : null}
             {index === 0 && article.table ? (
               <SpecTable
                 caption={article.table.caption}
