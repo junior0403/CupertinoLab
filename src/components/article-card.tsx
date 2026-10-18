@@ -4,8 +4,12 @@ import type { Article } from "@/content/articles";
 import { sections, sectionsFor, type CategorySlug } from "@/content/taxonomy";
 
 export function articleSectionName(article: { slug: string; category: CategorySlug }) {
-  const slug = sectionsFor(article)[0];
-  return sections.find((section) => section.slug === slug)?.name ?? "CupertinoLab";
+  const rails = sectionsFor(article);
+  const names = rails
+    .map((slug) => sections.find((section) => section.slug === slug)?.name)
+    .filter((name) => name !== undefined);
+  if (rails.includes("comparativas")) return names.join(" · ");
+  return names[0] ?? "CupertinoLab";
 }
 
 export function ArticleLink({

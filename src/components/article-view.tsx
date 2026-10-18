@@ -23,10 +23,10 @@ export function articleMeta(article: Article | undefined) {
   const imageAlt = article.coverAlt || article.title;
   const section = sectionsFor(article)
     .map((slug) => sections.find((item) => item.slug === slug))
-    .find((item) => item !== undefined);
+    .filter((item) => item !== undefined);
   const breadcrumb = breadcrumbLd([
     { name: "Inicio", path: "/" },
-    ...(section ? [{ name: section.name, path: section.path }] : []),
+    ...section.map((item) => ({ name: item.name, path: item.path })),
     { name: article.title, path },
   ]);
   const modified = isoFromUpdated(article.updated);
@@ -120,14 +120,14 @@ export function ArticleView({ article }: { article: Article }) {
           <Link to="/" className="underline underline-offset-4">
             Inicio
           </Link>
-          {primary ? (
-            <>
+          {rails.map((rail) => (
+            <span key={rail.slug}>
               {" · "}
-              <a href={primary.path} className="underline underline-offset-4">
-                {primary.name}
+              <a href={rail.path} className="underline underline-offset-4">
+                {rail.name}
               </a>
-            </>
-          ) : null}
+            </span>
+          ))}
         </p>
         <p className="mt-4 font-sans text-xs font-medium tracking-widest text-oxide uppercase">
           {articleSectionName(article)}
@@ -144,7 +144,9 @@ export function ArticleView({ article }: { article: Article }) {
           <span aria-hidden="true"> · </span>
           {article.minutes} min de lectura
           <span aria-hidden="true"> · </span>
-          {confidenceLabel[article.confidence]}
+          {rails.some((rail) => rail.slug === "comparativas")
+            ? rails.map((rail) => rail.name).join(" · ")
+            : confidenceLabel[article.confidence]}
         </p>
         <div className="mt-6">
           <ArticleCover article={article} priority />

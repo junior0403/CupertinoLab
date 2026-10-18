@@ -54,7 +54,7 @@ export const lineup: Article[] = [
       {
         heading: "Qué quedó de la gama anterior",
         paragraphs: [
-          "La lista de precios de EE. UU. que publicó la prensa mantiene iPhone 17e (desde 699 dólares en 256 GB), iPhone 17 (desde 899, con asterisco de activación con operador), iPhone Air (desde 1.099) e incluso un iPhone 16 de 128 GB a 799 con ese mismo asterisco. Los 17 Pro y 17 Pro Max salieron del catálogo.",
+          "La lista de precios de EE. UU. que publicó la prensa mantiene iPhone 17e (desde 699 dólares en 256 GB), iPhone 17 (desde 899, con asterisco de activación con operador), iPhone Air (desde 1.099) e incluso un iPhone 16 de 128 GB a 799 con ese mismo asterisco. Los 17 Pro y 17 Pro Max salieron del catálogo. Si todavía tienes el 17 Pro, la duda de cambiar está en [[iphone-18-pro-vs-iphone-17-pro|18 Pro contra 17 Pro]].",
           "El Watch SE 3 sigue a la venta desde 249 dólares. No es un modelo de este evento. Si el presupuesto es ese, no hace falta esperar a la Series 12.",
         ],
       },
