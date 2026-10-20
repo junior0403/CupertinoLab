@@ -1,7 +1,14 @@
-import type { CategorySlug, Cluster } from "@/content/taxonomy";
+import type { CategorySlug, Cluster, SectionSlug } from "@/content/taxonomy";
 import { duoLote } from "@/content/duo-lote";
 import { lineup } from "@/content/lineup";
+import { lote45 } from "@/content/lote-45";
 import { proVs17 } from "@/content/pro-vs-17";
+
+export type Block =
+  | { kind: "p"; text: string }
+  | { kind: "ul"; items: string[] }
+  | { kind: "ol"; items: string[] }
+  | { kind: "table"; headers: string[]; rows: string[][] };
 
 export type Article = {
   slug: string;
@@ -14,10 +21,14 @@ export type Article = {
   minutes: number;
   updated: string;
   confidence: "ficha" | "manos" | "pendiente";
+  path?: string;
+  lead?: string[];
+  extraRails?: SectionSlug[];
   sections: {
     heading: string;
     paragraphs: string[];
-    subsections?: { heading: string; paragraphs: string[] }[];
+    blocks?: Block[];
+    subsections?: { heading: string; paragraphs: string[]; blocks?: Block[] }[];
     table?: { caption: string; headers: string[]; rows: string[][] };
   }[];
   unknowns: string[];
@@ -29,9 +40,12 @@ export type Article = {
   coverAlt?: string;
   metaTitle?: string;
   metaDescription?: string;
+  revised?: boolean;
 };
 
 const updated = "29 sep 2026";
+
+const loteSlugs = new Set(lote45.map((article) => article.slug));
 
 export const articles: Article[] = [
   {
@@ -114,9 +128,10 @@ export const articles: Article[] = [
       },
     ],
   },
-  ...duoLote,
-  ...lineup,
-  ...proVs17,
+  ...duoLote.filter((article) => !loteSlugs.has(article.slug)),
+  ...lineup.filter((article) => !loteSlugs.has(article.slug)),
+  ...proVs17.filter((article) => !loteSlugs.has(article.slug)),
+  ...lote45,
 ];
 
 const bySlug = new Map(articles.map((article) => [article.slug, article]));

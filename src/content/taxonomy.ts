@@ -24,6 +24,11 @@ export const categories = [
     name: "iOS",
     dek: "iOS 26: Liquid Glass, traducción en vivo y los fallos que Apple acabó escribiendo.",
   },
+  {
+    slug: "guias",
+    name: "Guías",
+    dek: "Ajustes, compra y cuidados, con el procedimiento de Apple y sin una cifra inventada.",
+  },
 ] as const;
 
 export type CategorySlug = (typeof categories)[number]["slug"];
@@ -86,6 +91,10 @@ const comparativas = new Set([
   "iphone-18-pro-vs-iphone-17-pro",
   "iphone-duo-vs-iphone-18-pro-max",
   "iphone-duo-vs-galaxy-z-fold8",
+  "iphone-vs-android-2026",
+  "iphone-air-vs-iphone-17",
+  "airpods-5-vs-airpods-pro-3",
+  "series-12-vs-ultra-4",
 ]);
 
 const guias = new Set(["funciones-trucos"]);
@@ -97,16 +106,36 @@ const accesorios = new Set([
   "apple-pencil",
 ]);
 
-export function sectionsFor(article: { slug: string; category: CategorySlug }): SectionSlug[] {
+export function sectionsFor(article: {
+  slug: string;
+  category: CategorySlug;
+  path?: string;
+  extraRails?: readonly SectionSlug[];
+}): SectionSlug[] {
   const rails: SectionSlug[] = [];
-  if (article.category === "iphone") rails.push("iphone");
-  if (article.category === "duo") rails.push("iphone-duo");
-  if (article.category === "airpods") rails.push("airpods");
-  if (article.category === "watch") rails.push("watch");
-  if (article.category === "ios") rails.push("ios");
-  if (comparativas.has(article.slug)) rails.push("comparativas");
-  if (guias.has(article.slug)) rails.push("guias");
-  if (accesorios.has(article.slug)) rails.push("accesorios");
+  const path = article.path ?? "";
+  if (path.startsWith("/iphone/iphone-duo/") || (!path && article.category === "duo")) rails.push("iphone-duo");
+  else if (path.startsWith("/iphone/") || (!path && article.category === "iphone")) rails.push("iphone");
+  else if (path.startsWith("/airpods/") || (!path && article.category === "airpods")) rails.push("airpods");
+  else if (path.startsWith("/watch/") || (!path && article.category === "watch")) rails.push("watch");
+  else if (path.startsWith("/ios/") || (!path && article.category === "ios")) rails.push("ios");
+  else if (path.startsWith("/guias/") || article.category === "guias") rails.push("guias");
+  if (
+    (path.includes("iphone-duo") || article.category === "duo") &&
+    !rails.includes("iphone-duo")
+  ) {
+    rails.unshift("iphone-duo");
+  }
+  if (path.startsWith("/comparativas/") || comparativas.has(article.slug)) {
+    if (!rails.includes("comparativas")) rails.push("comparativas");
+  }
+  if (path.startsWith("/guias/") || guias.has(article.slug)) {
+    if (!rails.includes("guias")) rails.push("guias");
+  }
+  if (accesorios.has(article.slug) && !rails.includes("accesorios")) rails.push("accesorios");
+  for (const extra of article.extraRails ?? []) {
+    if (!rails.includes(extra)) rails.push(extra);
+  }
   return rails;
 }
 
@@ -114,7 +143,8 @@ export function sectionBySlug(slug: string) {
   return sections.find((section) => section.slug === slug);
 }
 
-export function articlePath(article: { slug: string; category: CategorySlug }) {
+export function articlePath(article: { slug: string; category: CategorySlug; path?: string }) {
+  if (article.path) return article.path;
   if (
     article.slug === "iphone-duo-vs-iphone-18-pro-max" ||
     article.slug === "iphone-duo-vs-galaxy-z-fold8"

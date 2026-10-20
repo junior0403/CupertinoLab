@@ -1,17 +1,12 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { ArticleMissing, ArticleView, articleMeta } from "@/components/article-view";
 import { getArticle } from "@/content/articles";
+import { articlePath } from "@/content/taxonomy";
 
 export const Route = createFileRoute("/comparativas/$slug")({
   loader: ({ params }) => {
     const article = getArticle(params.slug);
-    if (
-      !article ||
-      (article.slug !== "iphone-duo-vs-iphone-18-pro-max" &&
-        article.slug !== "iphone-duo-vs-galaxy-z-fold8")
-    ) {
-      throw notFound();
-    }
+    if (!article || articlePath(article) !== `/comparativas/${params.slug}`) throw notFound();
     return article;
   },
   head: ({ loaderData }) => articleMeta(loaderData),

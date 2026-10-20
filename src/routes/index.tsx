@@ -21,7 +21,7 @@ export const Route = createFileRoute("/")({
     ...pageMeta({
       title: "CupertinoLab · El catálogo, sin el tráiler",
       description:
-        "Fichas de iPhone 18, iPhone Duo, iOS 26, AirPods y Apple Watch. La cifra de Apple, separada de lo que todavía no está medido.",
+        "Guías de iPhone, iOS, AirPods y Apple Watch, más las fichas del iPhone Duo. Redacción independiente, con la cifra de Apple separada de lo que no está medido.",
       path: "/",
     }),
     scripts: [
@@ -68,8 +68,8 @@ function Home() {
       <h1 className="mt-2 max-w-xl font-serif text-4xl leading-tight text-ink md:text-5xl">
         Elige una ficha.
       </h1>
-      <p className="mt-3 max-w-md font-sans text-base leading-relaxed text-muted">
-        Desliza con el dedo. El iPhone Duo entra por una sola puerta.
+      <p className="mt-3 max-w-xl font-sans text-base leading-relaxed text-muted">
+        Compra, batería, privacidad y el resto del catálogo. El carrusel es la entrada; debajo está todo lo publicado.
       </p>
       <ArticleShelf slides={slides} />
       <nav className="mt-8 flex flex-wrap gap-2" aria-label="Secciones">
@@ -85,7 +85,42 @@ function Home() {
           </a>
         ))}
       </nav>
+      <PublishedIndex />
     </Shell>
+  );
+}
+
+function PublishedIndex() {
+  const groups = sections
+    .map((section) => ({ section, items: articlesInSection(section.slug) }))
+    .filter((group) => group.items.length > 0);
+  return (
+    <section className="mt-12 border-t border-line pt-8">
+      <h2 className="font-serif text-3xl text-ink">Lo publicado</h2>
+      <p className="mt-2 max-w-prose font-sans text-sm leading-relaxed text-muted">
+        Cada enlace abre una guía propia: cómo elegir, cuidar o comparar el aparato, no una ficha vacía.
+      </p>
+      <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2">
+        {groups.map(({ section, items }) => (
+          <div key={section.slug}>
+            <h3 className="font-sans text-xs font-medium tracking-widest text-oxide uppercase">
+              <a href={section.path} className="underline underline-offset-4">
+                {section.name}
+              </a>
+            </h3>
+            <ul className="mt-3 space-y-2">
+              {items.map((article) => (
+                <li key={article.slug}>
+                  <ArticleLink article={article} className="font-sans text-sm leading-snug text-ink underline decoration-line underline-offset-4 hover:text-oxide">
+                    {article.title}
+                  </ArticleLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 

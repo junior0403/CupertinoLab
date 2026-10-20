@@ -1,14 +1,14 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import type { Article } from "@/content/articles";
-import { sections, sectionsFor, type CategorySlug } from "@/content/taxonomy";
+import { sections, sectionsFor, articlePath, type CategorySlug } from "@/content/taxonomy";
 
 export function articleSectionName(article: { slug: string; category: CategorySlug }) {
   const rails = sectionsFor(article);
   const names = rails
     .map((slug) => sections.find((section) => section.slug === slug)?.name)
     .filter((name) => name !== undefined);
-  if (rails.includes("comparativas")) return names.join(" · ");
+  if (rails.includes("comparativas") || rails.includes("guias")) return names.join(" · ");
   return names[0] ?? "CupertinoLab";
 }
 
@@ -17,43 +17,48 @@ export function ArticleLink({
   className,
   children,
 }: {
-  article: Pick<Article, "slug" | "category">;
+  article: Pick<Article, "slug" | "category" | "path">;
   className?: string;
   children: ReactNode;
 }) {
   const classNames = className ?? "";
-  if (
-    article.slug === "iphone-duo-vs-iphone-18-pro-max" ||
-    article.slug === "iphone-duo-vs-galaxy-z-fold8"
-  ) {
+  const path = articlePath(article);
+  if (path.startsWith("/comparativas/")) {
     return (
       <Link to="/comparativas/$slug" params={{ slug: article.slug }} className={classNames}>
         {children}
       </Link>
     );
   }
-  if (article.category === "duo") {
+  if (path.startsWith("/guias/")) {
+    return (
+      <Link to="/guias/$slug" params={{ slug: article.slug }} className={classNames}>
+        {children}
+      </Link>
+    );
+  }
+  if (path.startsWith("/iphone/iphone-duo/")) {
     return (
       <Link to="/iphone/iphone-duo/$slug" params={{ slug: article.slug }} className={classNames}>
         {children}
       </Link>
     );
   }
-  if (article.category === "iphone") {
+  if (path.startsWith("/iphone/")) {
     return (
       <Link to="/iphone/$slug" params={{ slug: article.slug }} className={classNames}>
         {children}
       </Link>
     );
   }
-  if (article.category === "airpods") {
+  if (path.startsWith("/airpods/")) {
     return (
       <Link to="/airpods/$slug" params={{ slug: article.slug }} className={classNames}>
         {children}
       </Link>
     );
   }
-  if (article.category === "ios") {
+  if (path.startsWith("/ios/")) {
     return (
       <Link to="/ios/$slug" params={{ slug: article.slug }} className={classNames}>
         {children}

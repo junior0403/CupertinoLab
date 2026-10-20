@@ -10,6 +10,8 @@ const nav = [
   { href: "/airpods", label: "AirPods" },
   { href: "/watch", label: "Watch" },
   { href: "/ios", label: "iOS" },
+  { href: "/guias", label: "Guías" },
+  { href: "/comparativas", label: "Comparativas" },
   { href: "/iphone/iphone-duo", label: "Duo" },
   { href: "/mapa", label: "Mapa" },
   { href: "/editorial", label: "Método" },
@@ -239,25 +241,43 @@ export function AdSlot({ slot }: { slot: string }) {
 }
 
 export function RichText({ text }: { text: string }) {
-  const parts = text.split(/(\[\[[^\]]+\]\])/g);
+  const parts = text.split(/(\[\[[^|\]]+\|[^\]]+\]\]|\[[^\]]+\]\(https?:\/\/[^)\s]+\)|\*\*[^*]+\*\*)/g);
   return (
     <>
       {parts.map((part, index) => {
-        const match = part.match(/^\[\[([^|\]]+)\|([^\]]+)\]\]$/);
-        if (!match) return <span key={index}>{part}</span>;
-        const slug = match[1];
-        const label = match[2];
-        const article = slug ? getArticle(slug) : undefined;
-        if (!article || !label) return <span key={index}>{label ?? part}</span>;
-        return (
-          <ArticleLink
-            key={index}
-            article={article}
-            className="text-ink underline decoration-oxide/50 decoration-1 underline-offset-4 hover:text-oxide"
-          >
-            {label}
-          </ArticleLink>
-        );
+        const wiki = part.match(/^\[\[([^|\]]+)\|([^\]]+)\]\]$/);
+        if (wiki) {
+          const slug = wiki[1];
+          const label = wiki[2];
+          const article = slug ? getArticle(slug) : undefined;
+          if (!article || !label) return <span key={index}>{label ?? part}</span>;
+          return (
+            <ArticleLink
+              key={index}
+              article={article}
+              className="text-ink underline decoration-oxide/50 decoration-1 underline-offset-4 hover:text-oxide"
+            >
+              {label}
+            </ArticleLink>
+          );
+        }
+        const external = part.match(/^\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)$/);
+        if (external) {
+          return (
+            <a
+              key={index}
+              href={external[2]}
+              className="underline decoration-oxide/50 underline-offset-4 hover:text-oxide"
+              rel="noreferrer"
+              target="_blank"
+            >
+              {external[1]}
+            </a>
+          );
+        }
+        const strong = part.match(/^\*\*([^*]+)\*\*$/);
+        if (strong) return <strong key={index}>{strong[1]}</strong>;
+        return <span key={index}>{part}</span>;
       })}
     </>
   );
@@ -268,16 +288,18 @@ export function SpecTable({
   headers,
   rows,
 }: {
-  caption: string;
+  caption?: string;
   headers: string[];
   rows: string[][];
 }) {
   return (
     <div className="my-6 overflow-x-auto border border-line">
       <table className="w-full min-w-full border-collapse text-left font-sans text-sm">
-        <caption className="border-b border-line bg-card px-4 py-3 text-left font-sans text-xs tracking-widest text-muted uppercase">
-          {caption}
-        </caption>
+        {caption ? (
+          <caption className="border-b border-line bg-card px-4 py-3 text-left font-sans text-xs tracking-widest text-muted uppercase">
+            {caption}
+          </caption>
+        ) : null}
         <thead>
           <tr>
             {headers.map((header) => (
@@ -292,7 +314,7 @@ export function SpecTable({
             <tr key={row.join("-")} className="border-t border-line">
               {row.map((cell, index) => (
                 <td key={`${cell}-${index}`} className="px-4 py-3 align-top text-ink tabular-nums">
-                  {cell}
+                  <RichText text={cell} />
                 </td>
               ))}
             </tr>

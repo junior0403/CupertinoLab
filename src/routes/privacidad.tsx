@@ -19,10 +19,13 @@ function Privacidad() {
       <div className="mt-6 space-y-4 font-sans text-base leading-relaxed text-ink">
         <p>
           CupertinoLab es una publicación independiente. No pertenece a Apple y no vende sus
-          productos. Esta página dice qué datos toca el sitio hoy, 5 de octubre de 2026.
+          productos. Esta página dice qué datos toca el sitio hoy, 20 de octubre de 2026.
         </p>
         <h2 className="pt-4 font-serif text-2xl">Qué no recogemos</h2>
-        <p>No hay cuentas, ni boletín, ni formulario, ni píxel de publicidad, ni Google Analytics.</p>
+        <p>
+          No hay cuentas, ni boletín, ni formulario, ni Google Analytics. El script de AdSense sí está
+          cargado: qué cookie puede dejar se explica en el apartado de publicidad.
+        </p>
         <h2 className="pt-4 font-serif text-2xl">Qué puede ver el alojamiento</h2>
         <p>
           El sitio está en Netlify. Para servir y proteger la página, el servidor puede registrar la

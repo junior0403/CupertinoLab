@@ -1,7 +1,7 @@
 import { Link, notFound } from "@tanstack/react-router";
 import { ArticleCard, ArticleCover, ArticleLink, articleSectionName } from "@/components/article-card";
 import { RichText, Shell, SpecTable } from "@/components/chrome";
-import { articles, confidenceLabel, getArticle, type Article } from "@/content/articles";
+import { articles, confidenceLabel, getArticle, type Article, type Block } from "@/content/articles";
 import { articlePath, duoChapters, sections, sectionsFor, type CategorySlug } from "@/content/taxonomy";
 import { coverSrc } from "@/components/article-card";
 import { DuoPath } from "@/components/section-view";
@@ -10,6 +10,9 @@ import { breadcrumbLd, isoFromUpdated, plainText } from "@/lib/seo";
 export function loadDeskArticle(slug: string, category: CategorySlug) {
   const article = getArticle(slug);
   if (!article || article.category !== category) throw notFound();
+  const prefix =
+    category === "duo" ? "/iphone/iphone-duo" : `/${category === "guias" ? "guias" : category}`;
+  if (article.path && article.path !== `${prefix}/${slug}`) throw notFound();
   return article;
 }
 
@@ -106,10 +109,11 @@ export function ArticleView({ article }: { article: Article }) {
     .map((slug) => sections.find((section) => section.slug === slug))
     .filter((section) => section !== undefined);
   const primary = rails[0];
-  const related = article.related
+  const relatedAll = article.related
     .map((slug) => articles.find((item) => item.slug === slug))
-    .filter((item) => item !== undefined)
-    .slice(0, 3);
+    .filter((item) => item !== undefined);
+  const related = relatedAll.slice(0, 3);
+  const relatedMore = relatedAll.slice(3);
   const duoIndex = duoChapters.indexOf(article.slug as (typeof duoChapters)[number]);
   const inDuo = duoIndex >= 0;
 
@@ -140,11 +144,11 @@ export function ArticleView({ article }: { article: Article }) {
             CupertinoLab
           </Link>
           <span aria-hidden="true"> · </span>
-          {article.updated}
+          {article.revised ? `Actualizado el ${article.updated}` : article.updated}
           <span aria-hidden="true"> · </span>
           {article.minutes} min de lectura
           <span aria-hidden="true"> · </span>
-          {rails.some((rail) => rail.slug === "comparativas")
+          {rails.some((rail) => rail.slug === "comparativas" || rail.slug === "guias")
             ? rails.map((rail) => rail.name).join(" · ")
             : confidenceLabel[article.confidence]}
         </p>
@@ -152,29 +156,45 @@ export function ArticleView({ article }: { article: Article }) {
           <ArticleCover article={article} priority />
         </div>
 
+        {article.lead?.map((paragraph) => (
+          <p key={paragraph.slice(0, 48)} className="mt-4 font-sans text-base leading-relaxed text-ink">
+            <RichText text={paragraph} />
+          </p>
+        ))}
+
         <p className="mt-8 font-sans text-xs font-medium tracking-widest text-oxide uppercase">
           Respuesta rápida
         </p>
         <div className="mt-2 border border-line bg-card px-5 py-5">
-          <p className="font-serif text-2xl leading-snug text-ink">{article.directAnswer}</p>
+          <p className="font-serif text-2xl leading-snug text-ink">
+            <RichText text={article.directAnswer} />
+          </p>
         </div>
 
         {article.sections.map((section, index) => (
           <section key={section.heading} className="mt-8">
             <h2 className="font-serif text-2xl text-ink">{section.heading}</h2>
-            {section.paragraphs.map((paragraph) => (
-              <p key={paragraph.slice(0, 48)} className="mt-3 font-sans text-base leading-relaxed text-ink">
-                <RichText text={paragraph} />
-              </p>
-            ))}
+            {section.blocks ? (
+              <Blocks blocks={section.blocks} />
+            ) : (
+              section.paragraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 48)} className="mt-3 font-sans text-base leading-relaxed text-ink">
+                  <RichText text={paragraph} />
+                </p>
+              ))
+            )}
             {section.subsections?.map((sub) => (
               <div key={sub.heading} className="mt-6">
                 <h3 className="font-serif text-xl text-ink">{sub.heading}</h3>
-                {sub.paragraphs.map((paragraph) => (
-                  <p key={paragraph.slice(0, 48)} className="mt-3 font-sans text-base leading-relaxed text-ink">
-                    <RichText text={paragraph} />
-                  </p>
-                ))}
+                {sub.blocks ? (
+                  <Blocks blocks={sub.blocks} />
+                ) : (
+                  sub.paragraphs.map((paragraph) => (
+                    <p key={paragraph.slice(0, 48)} className="mt-3 font-sans text-base leading-relaxed text-ink">
+                      <RichText text={paragraph} />
+                    </p>
+                  ))
+                )}
               </div>
             ))}
             {section.table ? (
@@ -195,19 +215,27 @@ export function ArticleView({ article }: { article: Article }) {
           </section>
         ))}
 
-        <section className="mt-10">
-          <h2 className="font-serif text-2xl text-ink">Lo que nadie puede afirmar aún</h2>
-          <ul className="mt-3 list-disc space-y-2 pl-5 font-sans text-base leading-relaxed text-ink">
-            {article.unknowns.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </section>
+        {article.unknowns.length > 0 ? (
+          <section className="mt-10">
+            <h2 className="font-serif text-2xl text-ink">Lo que nadie puede afirmar aún</h2>
+            <ul className="mt-3 list-disc space-y-2 pl-5 font-sans text-base leading-relaxed text-ink">
+              {article.unknowns.map((item) => (
+                <li key={item}>
+                  <RichText text={item} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
-        <aside className="mt-8 border-l-4 border-oxide bg-card px-5 py-5">
-          <p className="font-sans text-xs font-medium tracking-widest text-oxide uppercase">Decisión</p>
-          <p className="mt-2 font-serif text-xl leading-snug text-ink">{article.decision}</p>
-        </aside>
+        {article.decision ? (
+          <aside className="mt-8 border-l-4 border-oxide bg-card px-5 py-5">
+            <p className="font-sans text-xs font-medium tracking-widest text-oxide uppercase">Decisión</p>
+            <p className="mt-2 font-serif text-xl leading-snug text-ink">
+              <RichText text={article.decision} />
+            </p>
+          </aside>
+        ) : null}
 
         <div data-ad-slot="cierre" hidden />
 
@@ -217,7 +245,9 @@ export function ArticleView({ article }: { article: Article }) {
             {article.faq.map((item) => (
               <details key={item.q} className="group py-3">
                 <summary className="font-sans text-base font-medium text-ink">{item.q}</summary>
-                <p className="mt-2 font-sans text-sm leading-relaxed text-muted">{item.a}</p>
+                <p className="mt-2 font-sans text-sm leading-relaxed text-muted">
+                  <RichText text={item.a} />
+                </p>
               </details>
             ))}
           </div>
@@ -276,6 +306,17 @@ export function ArticleView({ article }: { article: Article }) {
                 </li>
               ))}
             </ul>
+            {relatedMore.length > 0 ? (
+              <ul className="mt-4 space-y-2 font-sans text-base">
+                {relatedMore.map((item) => (
+                  <li key={item.slug}>
+                    <ArticleLink article={item} className="underline decoration-oxide/50 underline-offset-4">
+                      {item.title}
+                    </ArticleLink>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </section>
         ) : null}
 
@@ -292,6 +333,38 @@ export function ArticleView({ article }: { article: Article }) {
         </p>
       </article>
     </Shell>
+  );
+}
+
+function Blocks({ blocks }: { blocks: Block[] }) {
+  return (
+    <>
+      {blocks.map((block, index) => {
+        if (block.kind === "p") {
+          return (
+            <p key={index} className="mt-3 font-sans text-base leading-relaxed text-ink">
+              <RichText text={block.text} />
+            </p>
+          );
+        }
+        if (block.kind === "ul" || block.kind === "ol") {
+          const List = block.kind === "ol" ? "ol" : "ul";
+          return (
+            <List
+              key={index}
+              className={`mt-3 space-y-2 pl-5 font-sans text-base leading-relaxed text-ink ${block.kind === "ol" ? "list-decimal" : "list-disc"}`}
+            >
+              {block.items.map((item) => (
+                <li key={item}>
+                  <RichText text={item} />
+                </li>
+              ))}
+            </List>
+          );
+        }
+        return <SpecTable key={index} headers={block.headers} rows={block.rows} />;
+      })}
+    </>
   );
 }
 
